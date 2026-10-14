@@ -1,35 +1,35 @@
-# Examples · 真实数据成品案例
+# Examples · Finished Cases with Real Data
 
-templates/ 里的 gallery 是「例句」（演示数据、多卡合页）；这里是「成文」——拿一篇真实文章的公开数据，从判形状到出图走完整个 skill 流程的成品。拿不准交付物该长什么样，先看这里。
+The galleries in templates/ are "example sentences" (demo data, multiple cards on one page). This folder holds the "finished texts": cases that take the public data of a real article and run the whole skill process, from judging the shape to producing the charts. If you are unsure what a deliverable should look like, look here first.
 
 ## r04-financial-report.zh.html
 
-这是 R04「月度运营」模板的一份财务场景示例：保留原有版心和四个图表槽位，将内容改为月度经营财报，包括收入、毛利、经营现金流、毛利率、现金可支撑月数、每日收入、回款时段、收入构成和业务线毛利贡献。数据为虚构演示数据，用来说明同一模板如何适配金融 / 经济类报告。
+This is a finance-scenario example of the R04 "Monthly Ops" template. It keeps the original text width and the four chart slots, and changes the content into a monthly business financial report: revenue, gross profit, operating cash flow, gross margin, months of runway, daily revenue, collection time windows, revenue composition and gross-profit contribution by business line. The data is fictional demo data, used to show how the same template can fit a finance / economics report.
 
-预览图：[R04 月度经营财报](../docs/assets/examples/r04-financial-report.zh.png)
+Preview image: [R04 monthly business financial report](../docs/assets/examples/r04-financial-report.zh.png)
 
 ## lenny-2026-survey.html
 
-数据来源：Lenny's Newsletter《How tech workers are feeling in 2026》（2026-07-07，年度科技从业者调研）。一篇文章 → 8 张图，全英文，8 个模板不重复：
+Data source: Lenny's Newsletter, "How tech workers are feeling in 2026" (2026-07-07, annual survey of tech workers). One article → 8 charts, all in English, with 8 different templates:
 
-这是图数规则确定前保留的早期展示案例，用 8 张图覆盖更多模板。当前 skill 处理同类文章时，默认会筛选为 4–6 张，并在超过 6 张时拆页。
+This is an early showcase case kept from before the chart-count rule was set, using 8 charts to cover more templates. When the current skill handles a similar article, it filters down to 4–6 charts by default and splits into several pages when there are more than 6.
 
-| # | 模板 | 数据 |
+| # | Template | Data |
 |---|------|------|
-| 1 | Type Colonnade (L12) | AI 身份认同 49/27/14/5/3 |
-| 2 | Ballot Tally (L15) | 矛盾三联：享受工作 79 · 显著倦怠 56 · 乐观 49 |
-| 3 | Hundred Faces（语义单位·通栏） | 裁员担忧 28/31/21/12/8，嘴角弧度=担忧程度 |
-| 4 | Tick Rows (F5) | 四大恐惧 51/46/41/22 |
-| 5 | Hourglass Stream (L13) | 矛盾收窄 100 → 77 → 51 |
-| 6 | Brand Spectrum (L7) | 分层 NPS −49/−23/−5 |
-| 7 | Radial Convergence (L5) | 行业一句话：混乱 30/快 17/泡沫 12/兴奋 11/其他 30 |
-| 8 | Ballot Rings（表盘 tick·通栏） | AI 生产力 82 → 49 |
+| 1 | Type Colonnade (L12) | AI identity 49/27/14/5/3 |
+| 2 | Ballot Tally (L15) | Triple paradox: enjoy work 79 · significant burnout 56 · optimistic 49 |
+| 3 | Hundred Faces (semantic unit · full width) | Layoff worry 28/31/21/12/8, mouth curve = level of worry |
+| 4 | Tick Rows (F5) | Four big fears 51/46/41/22 |
+| 5 | Hourglass Stream (L13) | Paradox narrows 100 → 77 → 51 |
+| 6 | Brand Spectrum (L7) | Segmented NPS −49/−23/−5 |
+| 7 | Radial Convergence (L5) | Industry in one word: chaotic 30 / fast 17 / bubble 12 / exciting 11 / other 30 |
+| 8 | Ballot Rings (dial ticks · full width) | AI productivity 82 → 49 |
 
-这个文件顺便示范了几条容易忘的规矩：
+This file also demonstrates a few rules that are easy to forget:
 
-- **取整要认账**：身份认同取整后只有 98，底注写「rounding ate the other two」，不凑假线。
-- **没有的数据不编**：Brand Spectrum 模板原有竞品对照点，Lenny 没这个数据，删空。
-- **精确份额关掉随机泄漏**：Radial Convergence 模板的 rnd 泄漏逻辑（约 8% 汇错 hub 制造有机感）在调研数据上要关。
-- **同一批多图模板不重复**：8 张图 8 个模板。
-- **cascade 竖排类目名只配短标签**——本例曾用 Dot Cascade 画恐惧数据，两轮都被评「看不清」，换成横排 Tick Rows 后解决：标签保持水平永远是更稳的选择。
-- **reduced-motion 降级不能漏**（无头截图验证时可用 `--force-prefers-reduced-motion` 绕过动画时序）。
+- **Own up to rounding:** after rounding, the identity shares add up to only 98. The footnote says "rounding ate the other two" and does not pad with fake lines.
+- **Do not invent data you do not have:** the Brand Spectrum template has competitor comparison points, Lenny has no such data, so they were removed.
+- **Turn off random leakage for exact shares:** the rnd leakage logic of the Radial Convergence template (about 8% of items flow to the wrong hub to create an organic feel) must be turned off for survey data.
+- **No repeated templates within one batch:** 8 charts, 8 templates.
+- **Vertical cascade category names suit only short labels:** this case once used Dot Cascade for the fear data and was judged "hard to read" in two rounds; switching to the horizontal Tick Rows solved it. Keeping labels horizontal is always the safer choice.
+- **Do not forget the reduced-motion fallback** (when verifying with a headless screenshot, you can use `--force-prefers-reduced-motion` to bypass the animation timing).

@@ -1,37 +1,37 @@
-# 彩色换肤样张
+# Color Reskin Samples
 
-**这里只查配色，不查结构。**
+**Look up colors here, not structure.**
 
-渲染代码、几何、动画的正本永远是 `templates/` 根目录那四个 gallery。彩色样张是它们的换肤版——逐节点对应同一份数据和动效，从这里照抄结构等于绕远路，而且容易漂。
+The source of truth for rendering code, geometry and animation is always the four galleries in the root of `templates/`. The color samples are reskinned versions of them, node for node on the same data and motion. Copying structure from here is a detour and easy to drift.
 
-内置预设的色值正本是 `color-presets.js`。样张 header 里那些散落的说明（加墨系数、色板顺序）只是自述，规则本体在 `SKILL.md` 第六点五节。Agent 可以根据数据结构和使用场景自动选择一套预设，不要求用户先触发彩色。同一份 HTML 或同一组交付只能使用一种色彩系统，禁止跨预设混用；用户拿到成品后可以继续调色，但要重新检查对比度、视觉主次和数据语义。
+The source of truth for the built-in preset color values is `color-presets.js`. The scattered notes in the sample headers (ink-addition factor, palette order) are only self-description; the rules themselves are in `SKILL.md`, Section 6.5. The agent may choose a preset automatically from the data structure and the use case, and the user does not need to trigger color first. One HTML file or one set of deliverables may use only one color system, and mixing presets is forbidden. After receiving the finished work, the user can keep adjusting the colors, but contrast, visual hierarchy and data semantics must be rechecked.
 
-## Custom 不是第四套内置预设
+## Custom is not a fourth built-in preset
 
-用户明确提供品牌色、hex 或完整色板时，可以按 `SKILL.md` 的角色规则建立一套交付内 `CUSTOM`。它不出现在这里，因为不存在一套对所有用户都成立的 custom 样张。Custom 不得从三套内置预设借色补齐，也不得回写 `color-presets.js`，除非用户明确要求把品牌色固化为项目级预设。
+When the user explicitly provides a brand color, a hex value or a complete palette, you may build a `CUSTOM` palette for that deliverable by the role rules in `SKILL.md`. It does not appear here, because no single custom sample can hold for every user. A custom palette must not borrow colors from the three built-in presets to fill out its roles, and must not be written back to `color-presets.js`, unless the user explicitly asks to fix the brand color as a project-level preset.
 
-Treemap 的四种实现已经加入 Basics gallery：Mono 靠父级标题带和留白分组；Porcelain 用明度对应有序父组；Palm 用色相对应顶层类目；Wire 只给一个叶子使用荧光橙。
+The four Treemap implementations are already in the Basics gallery: Mono groups by parent title bands and whitespace; Porcelain uses lightness for ordered parent groups; Palm uses hue for top-level categories; Wire gives only one leaf the fluorescent orange.
 
-## 三套
+## The three presets
 
-| 文件 | 色系 | 色彩逻辑 | 适配 |
+| File | Color system | Color logic | Fits |
 | - | - | - | - |
-| `*-porcelain.html` | 青瓷蓝 | 单色相明度阶 | 有序数据、单序列 |
-| `*-palm.html` | 椰林绿 | 色相 = 类目 | 无序类目 ≤4（5–6 勉强） |
-| `*-wire.html` | 编辑部红 | 灰阶 + 一个荧光橙 | 几乎所有场合，要一个视线落点 |
+| `*-porcelain.html` | Celadon blue | Single-hue lightness ladder | Ordered data, single series |
+| `*-palm.html` | Palm green | Hue = category | Unordered categories ≤4 (5–6 barely) |
+| `*-wire.html` | Editorial red | Grayscale + one fluorescent orange | Almost any occasion that needs one focal point |
 
-每套四个 gallery（basics / glance / lupi / maps），共 12 个，没有缺口。地图样张只在用户明确要求地图时才用得上。
+Each preset has four galleries (basics / glance / lupi / maps), 12 in total, with no gaps. The map samples are only useful when the user explicitly asks for a map.
 
-archive（陶土青灰）已归档，不再是候选。它和 palm 都是"色相=类目"，功能重叠。
+archive (terracotta gray-green) is archived and no longer a candidate. It and palm are both "hue = category", so their functions overlap.
 
-## 三个交互大图
+## The three interactive large charts
 
-`big-circular` / `big-force` / `big-threads` 只有 porcelain 和 palm 两套，没有 wire。
+`big-circular` / `big-force` / `big-threads` exist only in porcelain and palm, with no wire version.
 
-原因：wire 本身就是黑灰阶加一个荧光橙，和原版 mono 大图的差别只在强调色，做出来近乎重复。要 wire 风格的大图，直接用 `templates/` 根目录的原版。
+Reason: wire is already black-and-gray grayscale plus one fluorescent orange, and it differs from the original Mono large charts only in the accent color, so building it would be nearly a duplicate. For a wire-style large chart, use the originals in the root of `templates/` directly.
 
-这三张是**暗底图**，色彩逻辑和浅卡不同：卡底压深，8 档单色相阶从亮到暗，编码的是"离核心多远"（亮 = 核心），不是类目。色值在 `color-presets.js` 各套的 `DARK` 块里。
+These three are **dark-background charts**, and their color logic differs from the light cards. The card background is pressed darker, and an 8-step single-hue ladder from bright to dark encodes "how far from the core" (bright = core), not categories. The color values are in the `DARK` block of each preset in `color-presets.js`.
 
-为什么不用色相分类目：这三张分别需要 5 / 8 / 三列结构的档位，超过 palm 绿黄区间的容量上限（≤6）。按 SKILL.md 门一的规则，只能走单色相明度阶。
+Why hue is not used for categories: these three need 5 / 8 / three-column tier structures, which exceeds the capacity limit of the palm green-yellow range (≤6). Following the rule of Gate 1 in SKILL.md, only a single-hue lightness ladder is possible.
 
-`big-threads` 的 hover 高亮是改 opacity（线恒为 `DK8[0]`），不用 `DARK.HL`。
+The hover highlight of `big-threads` changes opacity (the line is always `DK8[0]`) and does not use `DARK.HL`.

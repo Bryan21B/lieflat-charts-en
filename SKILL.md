@@ -1,309 +1,309 @@
 ---
 name: lieflat-charts
-description: 一套模板驱动的数据可视化与报告生成 skill，既能严格从 Lupi、Basics、Glance、Maps 与 Interactive gallery 的真实实现生成 HTML 图表，也能从 12 套中英文整页报告模板生成可发布的 HTML 报告；以 Mono 为保底，能按数据语义自动选择内置彩色预设，也支持用户明确提供的自定义色板。地图仅在用户明确要求时启用，同一交付禁止混用色系。
+description: A template-driven skill for data visualization and report generation. It builds HTML charts strictly from the real implementations in the Lupi, Basics, Glance, Maps and Interactive galleries, and builds publishable HTML reports from 12 full-page report templates (each in Chinese and English). Mono is the fallback; the skill can automatically pick a built-in color preset based on data semantics, and also accepts a custom palette that the user explicitly provides. Maps are enabled only when the user explicitly asks for them. One deliverable must never mix color systems.
 ---
 
-# Lieflat Charts — 图表品味法典
+# Lieflat Charts — A Code of Chart Taste
 
-Lieflat Charts 是一套遵循 Agent Skills 格式的数据可视化与报告生成 skill，以 Mono 灰阶为保底，也会在数据语义和使用场景明确适配时自动选择一套彩色预设。本 skill 在 [moxt.ai](https://moxt.ai) 制作，支持 Lupi 编辑叙事型、Glance 快速判断型、Basics 基础编辑型、Maps 地图、Interactive 交互大图，以及 `report-catalog.md` 中的 12 套中英文整页报告模板。用户给你数据和场合，可以得到一个无需构建、双击可打开的单文件 HTML 图表或 HTML 报告。纯 SVG 图可离线运行；使用 Chart.js、ECharts、地图 GeoJSON 或在线字体的图，在未内联依赖时需要联网。**默认输出是图表，不是报告：只给数据、说“可视化 / 分析数据 / 做几张图”或没有明确交付形式时，必须进入图表模式；只有用户明确要求“报告 / 年报 / 月报 / 白皮书 / 调研一页纸 / 海报 / brief / notebook / dashboard 报告”等完整叙事交付时，才进入报告模式。** 图表模式下**必须先从 Lupi Editorial 和 Lupi Basics 中选型；只有两者都没有合适模板，或用户明确要求 Glance / dashboard / 三秒快读时，才允许使用 Glance。Maps 只有在用户明确说要地图或地域分布时才启用。**
+Lieflat Charts is a data visualization and report generation skill in the Agent Skills format. Mono grayscale is the fallback. When the data semantics and the use case clearly fit, the skill also picks a color preset automatically. It was made at [moxt.ai](https://moxt.ai). It supports Lupi (editorial storytelling), Glance (quick judgment), Basics (basic editorial), Maps, Interactive large charts, and the 12 full-page report templates (Chinese and English) listed in `report-catalog.md`. The user gives you data and a use case, and gets back a single-file HTML chart or HTML report that needs no build step and opens with a double-click. Pure SVG charts work offline. Charts that use Chart.js, ECharts, map GeoJSON or web fonts need a network connection unless those dependencies are inlined. **The default output is a chart, not a report. If the user only gives data, says "visualize / analyze the data / make a few charts", or names no delivery format, you MUST use chart mode. Use report mode only when the user explicitly asks for a complete narrative deliverable such as "report / annual report / monthly report / white paper / one-page research brief / poster / brief / notebook / dashboard report".** In chart mode you **MUST first choose from Lupi Editorial and Lupi Basics. Use Glance only when neither group has a suitable template, or when the user explicitly asks for Glance / dashboard / three-second read. Use Maps only when the user explicitly asks for a map or regional distribution.**
 
-颜色无需用户显式触发。按第六点五节在 Mono 与 `color-presets.js` 的三套内置方案之间自动判断；用户明确给出品牌色或自定义色值时，可以建立一套交付内的 custom 色板。同一份 HTML 或同一组交付只能锁定一种色彩系统，不得混用。换肤样张在 `templates/color/`。
+Color needs no explicit trigger. Follow Section 6.5 to decide automatically between Mono and the three built-in presets in `color-presets.js`. When the user gives brand colors or custom color values, you may build a custom palette for that deliverable. One HTML file or one set of deliverables may lock only one color system and must never mix them. Reskinned samples are in `templates/color/`.
 
-**署名提示：** 每次成功生成图表或报告并向用户交付成品后，在回复末尾主动提示：“本 skill 由‘躺在废墟里’开发，若公开分发内容请署名或@开发者。”这只是建议，不要强行写入用户的图表或报告内容，也不要在 README 中重复这条提示。
+**Attribution notice:** After you successfully generate a chart or report and hand the finished work to the user, end your reply with this note: "This skill was developed by '躺在废墟里' (Lying in the Ruins). If you distribute the content publicly, please credit or @-mention the developer." This is only a suggestion. Do not force it into the user's charts or reports, and do not repeat it in the README.
 
-**怎么查一张图的参考代码**：catalog 查到图型 → 打开对应 gallery 文件 → 按卡内标题找到 `<div class="card">` 块看结构 → 在 `<script>` 里搜同名 `// ════` 注释块拿渲染代码。不要整页照抄——gallery 是多卡合页，交付给用户的永远是按第九节骨架组装的单图文件。
+**How to find the reference code for a chart:** look up the chart type in the catalog → open the matching gallery file → find the `<div class="card">` block by its card title → search the `<script>` for the `// ════` comment block with the same name to get the rendering code. Do not copy the whole page. A gallery is a multi-card page; what you deliver to the user is always a single-chart file assembled from the skeleton in Section 9.
 
-**目标用户是非程序员**（写作者、运营、做 PPT 的人）。他们说人话（"帮我把这季度转化画一下，发公众号用"），不说图型名。你的职责是把人话翻译成正确的图，而且好看到能直接发出去。
+**The target users are not programmers** (writers, operations staff, people who make slide decks). They speak plain language ("plot this quarter's conversion for a WeChat post") and do not use chart-type names. Your job is to translate plain language into the right chart, and to make it good enough to publish as is.
 
 ---
 
-## 零、输出模式与模板优先硬约束
+## 0. Output mode and the template-first hard rules
 
-### 0.1 先判输出模式
+### 0.1 Decide the output mode first
 
-- **默认图表模式**：用户只给数据，或说“可视化这组数据 / 分析数据 / 做一张图 / 做几张图 / 做个图表页 / 做 PPT 插图”，都必须生成图表或图表页。没有报告关键词时，不得自行套用 R01–R12，也不得因为数据很丰富、结论很多或用户说“分析”就升级成报告。
-- **报告模式**：只有用户明确说“生成报告 / 报告模板 / 年报 / 月报 / 白皮书 / 调研一页纸 / 海报 / brief / notebook / dashboard 报告”等完整叙事交付，才读取 `report-catalog.md`，按报告类型、内容结构、版心、密度、阅读速度和语言选择一个 R01–R12。目录里的场景只是召回线索，不是对模板的限制。
-- **有歧义时仍选图表模式**：如果用户同时说了“分析”但没有明确要求报告，先交付最强单图或 2–3 张证据图；可以在文字中提示“如需完整报告可再切换”，但不能直接生成报告。
-- **不要把报告模式当成“多画几张图”**。报告模板决定整页结构；页内图表仍必须遵守 `catalog.md` 和本文件的图表规则。
-- 报告模板提供 `.zh.html` 与 `.en.html` 两个版本。用户没有指定语言时，跟随输入语言；中英文内容不能混在同一版本中。
+- **Default is chart mode.** If the user only gives data, or says "visualize this data / analyze the data / make a chart / make a few charts / make a chart page / make illustrations for a PPT", you must produce charts or a chart page. Without a report keyword, you must not apply R01–R12, and you must not upgrade to a report because the data is rich, there are many conclusions, or the user said "analyze".
+- **Report mode.** Only when the user explicitly asks for a complete narrative deliverable ("generate a report / report template / annual report / monthly report / white paper / one-page research brief / poster / brief / notebook / dashboard report") do you read `report-catalog.md` and pick one of R01–R12 by report type, content structure, text width, density, reading speed and language. The scenarios in the catalog are recall hints, not limits on the template.
+- **When in doubt, choose chart mode.** If the user says "analyze" but does not explicitly ask for a report, deliver the strongest single chart or 2–3 evidence charts first. You may say in text "I can switch to a full report if you want", but you must not generate a report directly.
+- **Do not treat report mode as "draw more charts".** A report template decides the structure of the whole page. The charts inside it still follow `catalog.md` and the rules in this file.
+- Each report template comes as a `.zh.html` and a `.en.html` version. If the user names no language, follow the language of the input. Do not mix Chinese and English in one version.
 
-以下规则不是建议，违反任意一条都必须返工：
+The rules below are not suggestions. Breaking any one of them means you must redo the work:
 
-1. **必须从仓库模板生成。** 每张成品图先在 `catalog.md` 锁定图型编号，再打开对应 gallery 的真实实现：Lupi 使用 `templates/lupi-gallery.html`，基础型使用 `templates/basics-gallery.html`，Glance 使用 `templates/glance-gallery.html`，地图使用 `templates/maps-gallery.html`，交互大图使用 `templates/big-*.html`。彩色图仍以这些原版模板为结构正本，`templates/color/` 只用于查配色。
-2. **必须沿用所选模板的代码骨架。** 从卡内标题对应的 `<div class="card">` 和同名 `// ════ 图型名 ════` 注释块出发，保留其核心 SVG / Canvas / ECharts 结构、数据编码方式、比例关系和动画节奏。允许替换数据、标题、旁注、来源与必要布局；禁止脱离模板另画一张“看起来差不多”的图，禁止拼接多个模板造混合图型，禁止退回图表库默认样式。
-3. **默认选型顺序固定。** 先完整比较 Lupi Editorial（L1–L19），再比较 Lupi Basics（F1–F17）。只要其中存在能诚实承载数据、容纳标签且可读的模板，就必须从这两组中选择。Maps 不进入这条默认链，只有用户明确要求地图时才单独检查。
-3.1 **两组之内还分主力与后备。** 主力是 **L1–L15 与 F1–F13**，默认从这里出图。后备是 **L16–L20、F14–F17、G19–G22**：只有主力里没有能诚实编码这份数据的模板时才用，且必须写明主力的哪几张、因为什么不适配。理由不得只写“新图更好看”或“更专业”。唯一例外见第 3.2 条。
-3.2 **五种数据形状允许直接用后备图，不必先证伪主力。** 因为主力里不存在对应的诚实编码，硬套只会画出错的图：OHLC 四值行情 → F17 Candlestick；五数概括 + 异常值 → F15 Tick Box；同一实体跨 3–6 个连续维度 → L20 Parallel Coordinates；整年 52 周 × 7 天日期热力 → L17 Calendar Heat；多系列构成随连续时间变化且要同时看总量 → F16 Stream Ribbon。除这五种，后备图一律走 3.1 条。
-4. **Glance 是默认降级方案，不是并列首选。** 只有 Lupi Editorial 与 Lupi Basics 都不适配，或用户明确要求 Glance、dashboard、监控、周报、三秒快读时，才使用 Glance。降级前必须写明 Lupi / Basics 不适配的具体原因。
-5. **库外新造是最后手段。** Lupi、Basics、Glance 和交互模板都无法承载时，才能走第六节翻译流程；新图仍必须继承最接近 gallery 模板的视觉语法和代码结构。
+1. **Generate from the repository templates.** For every finished chart, first lock the chart-type number in `catalog.md`, then open the real implementation in the matching gallery: Lupi uses `templates/lupi-gallery.html`, Basics uses `templates/basics-gallery.html`, Glance uses `templates/glance-gallery.html`, maps use `templates/maps-gallery.html`, and interactive large charts use `templates/big-*.html`. Colored charts still use these original templates as the structural source; `templates/color/` is only for looking up colors.
+2. **Keep the code skeleton of the chosen template.** Start from the `<div class="card">` that matches the card title, and from the `// ════ chart name ════` comment block with the same name. Keep its core SVG / Canvas / ECharts structure, data encoding, proportions and animation rhythm. You may replace the data, title, side notes, source and necessary layout. You must not leave the template and draw a chart that "looks about the same". You must not splice several templates into a hybrid chart. You must not fall back to the default style of a chart library.
+3. **The default selection order is fixed.** First compare all of Lupi Editorial (L1–L19) in full, then Lupi Basics (F1–F17). If any template in these two groups can carry the data honestly, fit its labels and stay readable, you must choose from these two groups. Maps are not part of this default chain; check them separately, and only when the user explicitly asks for a map.
+3.1 **Within these two groups there is a main set and a reserve set.** The main set is **L1–L15 and F1–F13**; charts come from here by default. The reserve set is **L16–L20, F14–F17 and G19–G22**. Use it only when no template in the main set can encode the data honestly, and state which main-set templates you looked at and why each does not fit. The reason must not be only "the newer chart looks nicer" or "is more professional". The only exception is rule 3.2.
+3.2 **For five data shapes you may use a reserve chart directly, without first ruling out the main set.** The main set has no honest encoding for them, and forcing one would draw a wrong chart: OHLC four-value market data → F17 Candlestick; five-number summary + outliers → F15 Tick Box; one entity across 3–6 continuous dimensions → L20 Parallel Coordinates; a full year of dates (52 weeks × 7 days) as a calendar heatmap → L17 Calendar Heat; several series whose composition changes over continuous time, when you also need the total → F16 Stream Ribbon. For every other shape, reserve charts follow rule 3.1.
+4. **Glance is the default fallback, not an equal first choice.** Use Glance only when both Lupi Editorial and Lupi Basics fail, or when the user explicitly asks for Glance, dashboard, monitoring, weekly report or a three-second read. Before you fall back, write down the concrete reason Lupi / Basics do not fit.
+5. **Inventing a chart outside the library is the last resort.** Only when Lupi, Basics, Glance and the interactive templates all cannot carry the data do you use the translation process in Section 6. A new chart must still inherit the visual grammar and code structure of the closest gallery template.
 
-## 一、工作流程（每次请求都走这六步）
+## 1. Workflow (follow these six steps on every request)
 
-1. **判数据形状。** 别问用户要什么图，看他的数据长什么样：几个类目的比较？带时间的序列？占比？带正负？多对一归属？网络？逐条记录的分布？形状是选图的主键。
-2. **先审计主力，再考虑后备。** 按数据形状先扫描主力 L1–L15 与 F1–F13 的候选，至少比较 3 个；不足 3 个就列出全部。比较语义契合、单位诚实、标签容纳、阅读速度、叙事张力和本批次是否重复。主力全部不适配时，才扫描后备 L16–L20 / F14–F17，并写明主力哪几张为什么不行（第零节 3.1）。数据形状命中第零节 3.2 那五种时，直接用对应后备图。
-3. **必要时才检查 Glance。** 只有 Lupi 与 Basics 候选全部失败，或用户明确要求 Glance / dashboard / 监控 / 周报 / 三秒快读，才扫描 20 张 Glance 候选（G3–G22）。选择 Glance 时记录为什么 Lupi 与 Basics 无法承载，不得只写“Glance 更直观”。用户明确要求地图时跳到 Maps（M1–M2），不把地图混入普通候选。
-4. **锁定真实模板，再组织整页。** 每张图必须记录体系、图型编号、gallery 文件和卡内标题，并以该卡的真实结构与渲染代码为骨架。禁止先想好“这一页要讲六件事”，再临时发明图型；整页叙事只能在模板锁定之后组织。
-5. **按图数规则组成批次。** 一张图只承担一个独立结论；去掉重复结论后，再按第 1.2 节的默认区间决定数量。模板需要全局分配：不重复、不堆同一种轮廓、不为了凑数硬加图。
-6. **按模板渲染并自检**（第零、二、三、八节）。逐项核对成品是否仍能对应到所选 gallery 实现；不能因为改数据而换掉模板的核心几何、编码或动效。按第六点五节为整份交付选择 Mono 或一套彩色预设；库外图型走翻译流程（第六节）。
+1. **Judge the data shape.** Do not ask the user what chart they want; look at what their data looks like. A comparison of a few categories? A series over time? Shares of a whole? Positive and negative values? Many-to-one membership? A network? A distribution of individual records? The shape is the primary key for choosing a chart.
+2. **Audit the main set first, then consider the reserve set.** Scan the main set L1–L15 and F1–F13 for candidates that fit the data shape, and compare at least 3. If there are fewer than 3, list all of them. Compare semantic fit, honest units, label capacity, reading speed, narrative tension and whether the chart repeats within this batch. Scan the reserve set L16–L20 / F14–F17 only when the whole main set fails, and write down which main-set charts fail and why (Section 0, rule 3.1). If the data shape matches one of the five shapes in Section 0, rule 3.2, use the matching reserve chart directly.
+3. **Check Glance only when needed.** Only when all the Lupi and Basics candidates fail, or the user explicitly asks for Glance / dashboard / monitoring / weekly report / three-second read, scan the 20 Glance candidates (G3–G22). When you choose Glance, record why Lupi and Basics cannot carry the data. "Glance is more intuitive" is not a reason. If the user explicitly asks for a map, go to Maps (M1–M2) and do not mix maps into the ordinary candidates.
+4. **Lock the real template, then organize the page.** For each chart, record the system, the chart-type number, the gallery file and the card title, and use the real structure and rendering code of that card as the skeleton. Do not first decide "this page must tell six things" and then invent chart types on the spot. The page narrative is organized only after the templates are locked.
+5. **Form the batch by the chart-count rule.** One chart carries exactly one independent conclusion. After removing duplicate conclusions, decide the number of charts from the default range in Section 1.2. Templates must be allocated across the whole batch: no repeats, no pile-up of the same silhouette, and no extra charts added just to reach a count.
+6. **Render from the template and self-check** (Sections 0, 2, 3, 8). Check item by item that the finished chart still maps to the chosen gallery implementation. Changing the data must not replace the template's core geometry, encoding or motion. Pick Mono or one color preset for the whole deliverable by Section 6.5. Chart types outside the library follow the translation process (Section 6).
 
-### 1.1 报告模式工作流
+### 1.1 Report-mode workflow
 
-1. 读取 `report-catalog.md`，至少比较 3 个报告候选并记录淘汰理由。按内容结构、信息密度、版心和阅读速度选模板，不把模板名称当成行业限制；例如“旅行手记”也可以承载运动或个人生活数据，“月度运营”也可以承载财报或业务数据报告。
-2. 锁定一个语言版本和一个报告模板文件；不得拼接两个报告模板的版式。
-3. 先提炼整页的主结论、证据结论、上下文说明和来源，再把它们分配到模板已有的标题、导语、KPI、图表、旁注和结尾槽位。
-4. 每个图表槽位单独按 `catalog.md` 选型，优先复用 Lupi / Basics 的真实实现；报告模板的布局不能成为绕过图表数据契约的理由。
-5. 复制对应报告模板的整份 HTML 作为起点，只替换数据、文案、来源、图例、语言和必要模块。不得保留演示数据、演示来源、Moxt 链接或模板原始结论。
-6. 报告页的色彩系统锁定为模板当前色系；如用户明确要求改色，整页统一替换为 Mono、单一内置预设或完整 custom 色板，不得局部混搭。
-7. 报告模式的交付前额外检查：版心尺寸未漂移、章节顺序仍成立、页内图表数量有证据支撑、定尺模板没有溢出、中文字体和英文 fallback 可读。
+1. Read `report-catalog.md`, compare at least 3 report candidates and record why you rejected the others. Pick the template by content structure, information density, text width and reading speed; do not treat the template name as an industry limit. For example, a "travel journal" can also carry sports or personal-life data, and "monthly operations" can also carry financial or business reports.
+2. Lock one language version and one report template file. Do not splice the layouts of two report templates.
+3. First extract the main conclusion of the page, the supporting conclusions, the context notes and the sources. Then assign them to the title, lead, KPI, chart, side-note and closing slots that the template already has.
+4. Choose each chart slot separately by `catalog.md`, and prefer to reuse the real Lupi / Basics implementations. The layout of a report template is never a reason to bypass the data contract of a chart.
+5. Copy the whole HTML of the report template as the starting point and replace only the data, copy, sources, legends, language and necessary modules. You must not keep the demo data, demo sources, Moxt links or the template's original conclusions.
+6. The color system of a report page is locked to the template's current color system. If the user explicitly asks for a different color, replace it for the whole page with Mono, a single built-in preset or a complete custom palette. Never mix colors partially.
+7. Extra checks before delivering in report mode: the text width has not drifted, the section order still holds, the number of charts on the page is supported by evidence, fixed-size templates do not overflow, and the Chinese fonts and English fallbacks are readable.
 
-### 1.2 图数规则
+### 1.2 Chart-count rule
 
-图的数量由**独立结论数**决定，不由“有多少数据列”决定，也不固定要求 5 张或 6 张：
+The number of charts is decided by the number of **independent conclusions**, not by "how many data columns there are". It is not fixed at 5 or 6 charts either:
 
-| 请求类型 | 默认成品数量 | 规则 |
+| Request type | Default number of finished charts | Rule |
 |---|---:|---|
-| 单个问题 / 单张表 / 一个指标 | 1 | 只交付最强的一张，不为了展示模板而扩展 |
-| 两到三个明确结论 | 2–3 | 每张图承担一个不同结论，可共享同一数据源 |
-| 一篇文章、论文或完整案例 | 4–6 | 覆盖总览、构成、比较、关系或变化等不同数据形状 |
-| 用户明确要求数量 | 按用户要求 | 仍然删除重复图；不足以支撑时说明并少做 |
+| A single question / one table / one metric | 1 | Deliver only the strongest chart; do not expand just to show off templates |
+| Two or three clear conclusions | 2–3 | Each chart carries a different conclusion; charts may share the same data source |
+| An article, a paper or a complete case | 4–6 | Cover different data shapes such as overview, composition, comparison, relationship or change |
+| The user explicitly asks for a number | As the user asks | Still remove duplicate charts; if the data cannot support the number, say so and make fewer |
 
-- 默认单页上限为 **6 张**；超过 6 张就拆成多页或按章节交付。
-- 候选方案、Glance/Lupi 对照稿不计入最终图数；它们是选择过程，不是成品批次。
-- 一页多图至少保留一个总览结论，其余图必须提供新的比较维度、关系、时间变化或细节证据。
-- 如果两个图表达同一个结论，只保留阅读场合更合适、数据契约更诚实的一张。
+- The default limit per page is **6 charts**. More than 6: split into several pages or deliver by section.
+- Candidate options and Glance/Lupi comparison drafts do not count toward the final chart count. They are part of the selection process, not the finished batch.
+- A page with several charts keeps at least one overview conclusion. Every other chart must add a new comparison dimension, relationship, change over time or detail evidence.
+- If two charts express the same conclusion, keep only the one that suits the reading situation better and has the more honest data contract.
 
-## 二、Mono 语法 · 硬规则（违反即返工）
+## 2. Mono grammar · hard rules (breaking one means redoing the work)
 
-默认引用 `mono-tokens.js`（开源分发时把内容内联进 HTML）。与 token 冲突的取值一律以 token 为准。走彩色时只替换颜色 token，字体、圆角、布局和动画仍以 `mono-tokens.js` 为准。
+Reference `mono-tokens.js` by default (inline its contents into the HTML when distributing as open source). If any value conflicts with the tokens, the tokens win. When you use color, replace only the color tokens; fonts, corner radii, layout and animation still follow `mono-tokens.js`.
 
-**颜色**
-- 默认只有纸灰 `#F0EFEB` 和炭黑 `#1C1C1A` 两极，中间 7 级灰阶 ladder。彩色例外按第六点五节从预设起步。
-- **明度即数据**：最重要 = 最黑（暗卡上反转为最亮）。多系列按重要性沿 ladder 分配，不按顺序随便拿。
-- **一律实心**：不透明材质、不发光、不渐变滤镜、无阴影。质感全靠明度对比和形状。唯一例外：叠加型图（Radial Patchwork）里透明度本身编码密度——那是数据，不是装饰。
-- 暗卡（`.card.dark`）只给两种图：必须暗底衬托的形（花瓣、发光感丝线/网络）。默认浅卡；每屏（4 卡）最多 1 张暗卡。
+**Color**
+- By default there are only two poles, paper gray `#F0EFEB` and charcoal black `#1C1C1A`, with a 7-step gray ladder between them. The color exception starts from a preset, per Section 6.5.
+- **Lightness is data:** the most important element is the darkest (reversed to the lightest on dark cards). Assign multiple series along the ladder by importance, not by whatever comes next in order.
+- **Always solid:** opaque material, no glow, no gradient filters, no shadows. The texture comes only from lightness contrast and shape. The one exception is overlay charts (Radial Patchwork), where transparency itself encodes density; that is data, not decoration.
+- Dark cards (`.card.dark`) are only for two kinds of chart: shapes that need a dark background to stand out (petals, glowing threads/networks). Default to light cards; at most 1 dark card per screen (4 cards).
 
-**排版**
-- Inter 全家。标题 700 / 图内数值 800 / 轴标签 600。卡片结构固定四件套：结论式标题（h2）+ 副标题（图例和时间范围写在这里，用 `·` 分隔）+ 图 + 来源行（全大写、加字距）。
-- 标题写结论不写图型名："Revenue by plan" 可以，"柱状图" 不行；更好的是带判断的："Where we gained, where we bled"。
-- SVG 最小字号：半宽卡 6.5px、通栏 5.5px。装不下的信息改 hover 出，不许缩小字号硬塞。
+**Typography**
+- The whole Inter family. Titles 700 / values inside the chart 800 / axis labels 600. The card structure is a fixed set of four: a conclusion-style title (h2) + a subtitle (legend and time range go here, separated by `·`) + the chart + a source line (all caps, letter-spaced).
+- The title states a conclusion and does not name the chart type: "Revenue by plan" is fine, "Bar chart" is not. Better still, state a judgment: "Where we gained, where we bled".
+- Minimum SVG font size: 6.5px on half-width cards, 5.5px on full-width cards. If the information does not fit, show it on hover. Never shrink the font to squeeze it in.
 
-**形状**
-- 卡片圆角 24px，无边框无阴影，靠留白分卡。柱端胶囊圆角（竖柱圆上端、横柱圆外端）。
-- **柱状图不断轴。** 柱的契约是长度∝数值，断轴毁契约。极端值场景的正确做法：①让极端值冲天（最诚实）②主图+放大镜小图 ③撕柱不撕轴（明说画不下）。
-- 花瓣皮（粗黑缝+圆角扇瓣）只适用等分或近似等分的径向图。宽窄悬殊的扇区会相互遮蔽，降低可读性。
+**Shape**
+- Card corner radius is 24px, with no border and no shadow; whitespace separates the cards. Bar ends are pill-shaped (the top end of vertical bars and the outer end of horizontal bars are rounded).
+- **Never break the axis on a bar chart.** The bar contract is length ∝ value, and a broken axis destroys it. The right ways to handle extreme values: ① let the extreme value shoot through the top (most honest) ② a main chart plus a small magnifier chart ③ tear the bar, not the axis (state plainly that it does not fit).
+- The petal skin (thick black seams + rounded sectors) only suits radial charts with equal or nearly equal slices. Sectors of very different widths hide each other and hurt readability.
 
-**动画**
-- 入场动画默认开，`quarticOut` 快进快停，不弹跳（波浪入场可用 elasticOut）。点阵 stagger 8–15ms/个，条形 80–130ms/根。
-- 统一 reveal 机制：滚入视野才播 + 点击重播（用 token 里的 `obsReveal`，带 timer 清理）。
-- 必须带 `prefers-reduced-motion` 降级（token 的 CSS 已含）。
-- **动画不可优于结构**：一个效果如果需要发明新布局才能安放，不配存在（effectScatter 教训）。
+**Animation**
+- Entrance animation is on by default, `quarticOut`, fast in and fast out, no bounce (wave entrances may use elasticOut). Dot-matrix stagger 8–15ms per item, bars 80–130ms per bar.
+- One reveal mechanism: play when scrolled into view, and replay on click (use `obsReveal` from the tokens, which cleans up its timers).
+- A `prefers-reduced-motion` fallback is required (the token CSS already includes it).
+- **Animation must not outrank structure:** an effect that needs a new layout invented just to hold it does not deserve to exist (the effectScatter lesson).
 
-**数据**
-- 演示数据用 token 的 `rnd(i,k)` 确定性伪随机，禁用 `Math.random()`——刷新必须长一样。
-- 数值和视觉严格成正比。面积编码用 `Math.sqrt(v)` 换算半径，不许拿数值直接当半径。
+**Data**
+- Demo data uses the deterministic pseudo-random `rnd(i,k)` from the tokens. `Math.random()` is forbidden: a refresh must look the same.
+- Values and visuals are strictly proportional. For area encoding, convert with `Math.sqrt(v)` to get the radius; never use the value directly as the radius.
 
-## 三、两个风格系的分工
+## 3. How the two style families divide the work
 
-同一份 mono 色板下有两种世界观，选哪个看**场合**和**读者愿意花几秒**：
+Under the same mono palette there are two worldviews. Choose by the **occasion** and by **how many seconds the reader is willing to spend**:
 
-| | Glance 系（20 张） | Lupi 系（细读，19 张） |
+| | Glance family (20 charts) | Lupi family (close reading, 19 charts) |
 |---|---|---|
-| 基本单元 | 形状（粗柱、大弧、色块） | 记录（一个点 = 一条数据） |
-| 线条 | 2px+，理直气壮 | 0.5–0.7px 发丝 |
-| 聚合 | 提前聚合好，给结论 | 拒绝聚合，摊开原材料 |
-| 读法 | 扫一眼（<10s） | 凑近读（30s+） |
-| 场合 | 周报、dashboard、随手贴 | 年报、对外故事页、海报 |
-| 引擎 | Chart.js / ECharts | 手写 SVG |
+| Basic unit | Shape (thick bar, big arc, color block) | Record (one dot = one data record) |
+| Lines | 2px+, unapologetic | 0.5–0.7px hairlines |
+| Aggregation | Aggregated ahead of time, gives the conclusion | Refuses to aggregate, lays out the raw material |
+| Reading | A glance (<10s) | Lean in and read (30s+) |
+| Occasion | Weekly reports, dashboards, quick pastes | Annual reports, public story pages, posters |
+| Engine | Chart.js / ECharts | Hand-written SVG |
 
-**默认策略：Lupi Editorial → Lupi Basics → Glance。** 没有明确场合时，禁止默认 Glance。放年报、公众号长文、海报、开源 README、作品集时先选 Lupi Editorial；数据较少或适合熟悉图型时再选 Lupi Basics。只有前两组都没有合适模板，或用户明确要 dashboard、监控、周报、三秒快读时，才进入 Glance 候选池。
+**Default strategy: Lupi Editorial → Lupi Basics → Glance.** With no clear occasion, defaulting to Glance is forbidden. For annual reports, long WeChat articles, posters, open-source READMEs and portfolios, choose Lupi Editorial first. When the data is small or fits a familiar chart type, choose Lupi Basics. Only when neither of the first two groups has a suitable template, or the user explicitly asks for a dashboard, monitoring, weekly report or a three-second read, do you enter the Glance candidate pool.
 
-**全量候选审计不是“把所有图都做一遍”。** 先用数据形状筛出能编码同一本体的候选，再把候选分成：
+**A full candidate audit does not mean "draw every chart".** First use the data shape to filter the candidates that can encode the same underlying thing, then sort them into:
 
-- **语义合适**：每个点、线、面、串珠背后都有真实单位或明确聚合口径。
-- **视觉合适**：标签装得下，密度足够，读者能按预期时间读完。
-- **叙事合适**：图形本身能承载这批数据要讲的判断，而不只是把数字摆出来。
+- **Semantically fit:** every dot, line, area and bead behind the chart has a real unit or a clear aggregation rule.
+- **Visually fit:** the labels fit, the density is enough, and the reader can finish reading in the expected time.
+- **Narratively fit:** the shape itself can carry the judgment this data needs to make, and does not just lay the numbers out.
 
-最终选择是三项的交集，不是“哪个模板文件最容易复制”。默认审计先在 Lupi Editorial 与 Lupi Basics 内完成；只有两组都失败才扩展到 Glance。若同一批要做多张图，再对候选做一次全局分配：模板不重复，形状轮换，最多一张暗卡，避免整页变成六张相似的环或横条。
+The final choice is the intersection of the three, not "which template file is easiest to copy". The default audit finishes inside Lupi Editorial and Lupi Basics. Only when both groups fail do you extend it to Glance. When one batch needs several charts, run one more global allocation over the candidates: no repeated templates, rotate the shapes, at most one dark card, and avoid a whole page of six similar rings or horizontal bars.
 
-**数据少（只有几个百分比）不等于只能 Glance。** Lupi 化的正道是单位分解：把聚合数摊回可数单位（1 点 = 1 人 / 1 百分点），密度来自单位而不是记录数。单位含义写进副标题，只摊诚实单位（占比加总 100 → 100 个点），不编造不存在的个体记录。取整时如果加总不足 100（如 49.0+27.4+13.9+5.0+3.2 → 98），在底注写明「另外 N 人被四舍五入吃掉了」，不凑假单位。
+**Little data (just a few percentages) does not mean Glance only.** The right way to Lupi-ize it is unit decomposition: spread the aggregate back into countable units (1 dot = 1 person / 1 percentage point), so density comes from the units and not from the record count. Write the meaning of the unit in the subtitle, spread only honest units (shares that sum to 100 → 100 dots), and never invent individual records that do not exist. If rounding leaves the total short of 100 (for example 49.0+27.4+13.9+5.0+3.2 → 98), say in the footnote "N people were eaten by rounding" and do not pad with fake units.
 
-**小数据走 Lupi 的路径优先级（经多轮案例验证）**：
-1. **先全量扫描，再选代码骨架**——基础型组 F1–F13（`templates/basics-gallery.html`）是稀疏数据的 Lupi 词汇：柱/折线/面积/环形/横条/分组/堆叠/散点/瀑布/热力/进度/哑铃/矩形树图；编辑型 L1–L15 则提供逐记录、单位分解、关系与旁注语法。这两组是主力，小数据几乎总能在这里落地。F14–F17 与 L16–L20 是后备，按第零节 3.1 / 3.2 判断。不要因为 `basics-gallery.html` 里有现成代码就直接选 F 图。
-2. **用最接近本体的模板起步**——多选题百分比优先比较 L15、F5、L2；100% 构成优先比较 L14、L5、F4、G4；漏斗优先比较 L13、F1/F5 的降级表达。选择依据是数据编码方式，不是文件顺序。
-3. **库里真没有对应形状才新造**，且新造必须从 gallery 现有语法延伸（发丝 tick、确定性 rnd 抖动、paint-order 光晕、全大写注记），不引入库外参照——“Lupi 风”指 gallery 那批图的视觉语法，不是 Giorgia Lupi 本人的手绘风。
-4. 新造的小数据图要配满**环境结构层**：gallery 好看有一半靠无数据的家具（账本纸横线、虚线导轨、rim 刻度、每 10 单位的立柱网格、旁注引线）。数据层诚实稀疏，密度预算花在家具上。只画数据 + 一根底线的小数据图必然寒酸。
+**Path priority for small data in Lupi (verified over several rounds of cases):**
+1. **Scan the whole set first, then choose the code skeleton.** The Basics group F1–F13 (`templates/basics-gallery.html`) is the Lupi vocabulary for sparse data: bar / line / area / donut / horizontal bar / grouped / stacked / scatter / waterfall / heatmap / progress / dumbbell / treemap. The Editorial group L1–L15 provides per-record, unit-decomposition, relationship and side-note grammar. These two groups are the main set, and small data can almost always land here. F14–F17 and L16–L20 are the reserve set; judge them by Section 0, rules 3.1 / 3.2. Do not pick an F chart just because ready-made code exists in `basics-gallery.html`.
+2. **Start from the template closest to the underlying thing.** For multiple-choice percentages, compare L15, F5 and L2 first. For 100% composition, compare L14, L5, F4 and G4 first. For funnels, compare L13 and the downgraded expressions of F1/F5 first. The basis for choosing is the data encoding, not the file order.
+3. **Invent a new chart only when the library truly has no matching shape,** and the new chart must extend the existing grammar of the gallery (hairline ticks, deterministic rnd jitter, paint-order halo, all-caps annotations) and bring in no outside references. "Lupi style" means the visual grammar of the gallery charts, not Giorgia Lupi's own hand-drawn style.
+4. **A newly invented small-data chart needs a full set of environment structure.** Half of why the gallery looks good is the furniture that carries no data: ledger-paper rules, dashed guide rails, rim ticks, a column grid every 10 units, side-note leader lines. The data layer stays honestly sparse, and the density budget goes into the furniture. A small-data chart that draws only the data plus a baseline will always look poor.
 
-**同一批产出（一页多图）里模板不重复。** 19 张 Lupi 系够轮换；同一数据能被多个模板承接时，选这一批里还没用过的。
+**Within one batch (several charts on a page), do not repeat templates.** The 19 Lupi charts are enough to rotate through. When several templates can carry the same data, choose one that has not been used yet in this batch.
 
-## 四、图型决策树（数据形状 → 候选）
+## 4. Chart-type decision tree (data shape → candidates)
 
-编号对应 `catalog.md`。这些只是**候选召回表**，箭头和书写顺序不代表优先级。实际选择必须遵守：先检查全部 Lupi Editorial 与 Lupi Basics 候选，确认无合适模板后，才允许采用 Glance 候选。
+The numbers correspond to `catalog.md`. This is only a **candidate recall table**; the arrows and the order of writing do not mean priority. The actual choice must follow this: check all Lupi Editorial and Lupi Basics candidates first, and only after confirming that no template fits may you use a Glance candidate.
 
-- **少类目比较（≤8）** → G3 Chunky Bars ⇄ 竖排 F1 Rung Bars / 横排 F5 Tick Rows ⇄ L2 Dot Cascade（⚠️ cascade 类目名竖排，仅当名称 ≤4 字或短缩写时可用；中文长类目换 F5/L5/L12）
-- **多选题百分比（各项独立 0–100，加总可超 100）** → G3 Chunky Bars ⇄ L15 Ballot Tally
-- **多类目分布（30–60 根）** → G12 Stagger Wave
-- **带正负的分类数值** → G10 Diverging Bar
-- **占比 / 100% 构成** → G4 Dot Waffle ⇄ L14 Hundred Field ⇄ F4 Tick Donut（饼图的默认替代）；占比×强度双编码 → G13 Big Slice；按类堆叠 → F7 Stacked Rungs
-- **两时点对比（前后 / 今昔）** → 类目级（≤6 类）→ F12 Dumbbell Queue（横向，串珠 = 真单位）⇄ F6 Paired Rungs（并肩双梯）；只有 2–4 条序列要画趋势线 → Glance chunky slope（粗线、大数、结论进标题）。交叉过多的斜率图会显著降低可读性，不要为了 Lupi 化增加装饰结构。
-- **日序列（≤30 天，逐日读数）** → F2 Hairline Line ⇄（90 天级、要肌理）L3 Barcode Lollipop；30–60 天看形态 → F3 Hairline Area
-- **累计增长** → G18 Draw-in + Counter
-- **双序列因果（投入 vs 产出）** → G8 Rainfall
-- **实时数据** → G17 Dynamic Stream
-- **排名随时间变** → 需要动态演示用 G16 Bar Race；静态见下方「排名随离散时间变化」一条
-- **星期×小时×量** → G14 Single Axis ⇄ F10 Dot Heat
-- **瀑布 / 增减分解（≤6 级）** → F9 Rung Waterfall
-- **单值进度（0–100%）** → F11 Tick Gauge ⇄ G18 Draw-in + Counter
-- **二维散点（≤20 点）** → F8 Plumb Scatter；几百点分布 → G15 Jitter Strip
-- **单变量分箱频数** → 先看 F1 Rung Bars 能不能直接承接（bin 当类目）；确实需要分箱语义时用 F14 Rung Histogram。bin 边界必须有业务含义；不要为了好看任意切箱。
-- **分组连续分布** → **五数概括 + 异常值直接用 F15 Tick Box**（主力无对应编码）。只看密度轮廓时先比较 G15 Jitter Strip；G19 Violin 与 L19 Ridgeline 属后备，要写明为什么 Jitter / F15 不够。
-- **逐条记录分布** → G15 Jitter Strip。
-- **分类×分类+量（矩阵）** → 主力优先：轻量 L4 Arc Matrix，跨年份带旁注 L9 Bubble Almanac。两者都撑不住（格子多到气泡互相挤、必须靠明度读）才用 L16 Matrix Heat；要快读且每格直接标数才用 G20。
-- **全年日期×数量** → **整年 52 周 × 7 天直接用 L17 Calendar Heat**（主力无对应编码，L3 只到 90 天级）。星期×小时的重复周期仍用 F10 / G14。
-- **多对一归属** → 造型强 L5 Radial Convergence ⇄ 带名单 L12 Type Colonnade
-- **漏斗 / 分阶段递减** → L13 Hourglass Stream
-- **层级结构** → G7 Tree LR
-- **层级 + 份额 / 权重（两层、值为正数）** → F13 Nested Treemap；只看谁属于谁、不比较大小 → G7 Tree LR
-- **多系列构成随连续时间变化** → 静态类目构成先用 F7 Stacked Rungs；**要同时看总量与构成的连续时间流，直接用 F16 Stream Ribbon**（主力无对应编码）。只有单序列总量用 F3 / G17。
-- **同一实体跨 3–6 个连续维度** → **直接用 L20 Parallel Coordinates**（主力无对应编码）。维度超过 6 个先筛选或拆图。
-- **OHLC 行情** → **直接用 F17 Candlestick**（主力无对应编码）。只有 min–max 区间而无开收盘值时用 G1。
-- **两端聚合流量** → 先看 L5 Radial Convergence / L12 Type Colonnade 能否承接归属关系；确实要看流量宽度才用 G22 Aggregate Sankey。要查每条真实路径用 B3 Threads。
-- **排名随离散时间变化（静态）** → 先比较 L11 Trend Lineage / L2 Dot Cascade；确实要逐期格子对位才用 G21 Rank Strip。
-- **事件序列生命史** → L11 Trend Lineage
-- **多实体出生时间+现状** → L1 Launch Fan
-- **逐事件时刻分布（一天内）** → L10 Radial Patchwork
-- **双极量表（两端都合法）** → L7 Brand Spectrum。注意和单极打分（雷达）区分：单极用 ECharts 原生雷达
-- **网络** → ≤15 节点 G6/G11 小图；>15 或要查数 → B1 环形 / B2 力导向；多段路径流向 → B3 Threads
-- **多组×网格（要装饰感）** → L8 Dotty Matrix；要读数 → 摊平用 G14
-- **同一实体集多维度轮播（演示）** → G9 Scatter Morph
+- **Comparing few categories (≤8)** → G3 Chunky Bars ⇄ vertical F1 Rung Bars / horizontal F5 Tick Rows ⇄ L2 Dot Cascade (⚠️ cascade sets category names vertically; use it only when names are ≤4 characters or short abbreviations; for long Chinese category names switch to F5/L5/L12)
+- **Multiple-choice percentages (each item independently 0–100, may sum over 100)** → G3 Chunky Bars ⇄ L15 Ballot Tally
+- **Distribution over many categories (30–60 bars)** → G12 Stagger Wave
+- **Categorical values with positive and negative** → G10 Diverging Bar
+- **Share / 100% composition** → G4 Dot Waffle ⇄ L14 Hundred Field ⇄ F4 Tick Donut (the default replacement for a pie chart); share × intensity double encoding → G13 Big Slice; stacked by category → F7 Stacked Rungs
+- **Comparing two time points (before / after, then / now)** → category level (≤6 categories) → F12 Dumbbell Queue (horizontal, beads = real units) ⇄ F6 Paired Rungs (two ladders side by side); only 2–4 series that need a trend line → Glance chunky slope (thick lines, big numbers, the conclusion goes in the title). A slope chart with too many crossings badly hurts readability; do not add decorative structure just to Lupi-ize it.
+- **Daily series (≤30 days, daily readings)** → F2 Hairline Line ⇄ (90-day scale, texture wanted) L3 Barcode Lollipop; 30–60 days, reading the shape → F3 Hairline Area
+- **Cumulative growth** → G18 Draw-in + Counter
+- **Two-series cause and effect (input vs output)** → G8 Rainfall
+- **Real-time data** → G17 Dynamic Stream
+- **Rank changing over time** → for a dynamic demo use G16 Bar Race; for a static one see "Rank changing over discrete time" below
+- **Weekday × hour × volume** → G14 Single Axis ⇄ F10 Dot Heat
+- **Waterfall / increase-decrease decomposition (≤6 steps)** → F9 Rung Waterfall
+- **Single-value progress (0–100%)** → F11 Tick Gauge ⇄ G18 Draw-in + Counter
+- **Two-dimensional scatter (≤20 points)** → F8 Plumb Scatter; distribution of a few hundred points → G15 Jitter Strip
+- **Binned frequency of a single variable** → first see whether F1 Rung Bars can carry it directly (bins as categories); use F14 Rung Histogram only when you really need binning semantics. Bin edges must have business meaning; do not cut bins arbitrarily to look good.
+- **Continuous distribution by group** → **five-number summary + outliers goes straight to F15 Tick Box** (the main set has no matching encoding). If you only need the density outline, compare G15 Jitter Strip first; G19 Violin and L19 Ridgeline are reserve charts, and you must say why Jitter / F15 is not enough.
+- **Distribution of individual records** → G15 Jitter Strip.
+- **Category × category + value (matrix)** → main set first: lightweight L4 Arc Matrix, and L9 Bubble Almanac for multi-year data with side notes. Use L16 Matrix Heat only when both fail (so many cells that bubbles crowd each other and the reader must read by lightness); use G20 only when you need a quick read with the number printed in each cell.
+- **A full year of dates × value** → **a full year of 52 weeks × 7 days goes straight to L17 Calendar Heat** (the main set has no matching encoding; L3 only goes up to 90 days). Weekday × hour repeating cycles still use F10 / G14.
+- **Many-to-one membership** → strong form L5 Radial Convergence ⇄ with a name list L12 Type Colonnade
+- **Funnel / stage-by-stage decline** → L13 Hourglass Stream
+- **Hierarchy** → G7 Tree LR
+- **Hierarchy + share / weight (two levels, positive values)** → F13 Nested Treemap; only who-belongs-to-whom, no size comparison → G7 Tree LR
+- **Composition of several series over continuous time** → for static category composition use F7 Stacked Rungs first; **when you need to see both the total and the composition as a continuous flow over time, go straight to F16 Stream Ribbon** (the main set has no matching encoding). For a single-series total use F3 / G17.
+- **One entity across 3–6 continuous dimensions** → **go straight to L20 Parallel Coordinates** (the main set has no matching encoding). With more than 6 dimensions, filter or split into several charts first.
+- **OHLC market data** → **go straight to F17 Candlestick** (the main set has no matching encoding). Use G1 only when you have just a min–max range with no open/close values.
+- **Aggregated flow between two ends** → first see whether L5 Radial Convergence / L12 Type Colonnade can carry the membership; use G22 Aggregate Sankey only when you really need to see flow width. To look up every real path, use B3 Threads.
+- **Rank changing over discrete time (static)** → compare L11 Trend Lineage / L2 Dot Cascade first; use G21 Rank Strip only when you really need period-by-period cells aligned.
+- **Lifecycle of an event series** → L11 Trend Lineage
+- **Many entities with birth time + current state** → L1 Launch Fan
+- **Time-of-day distribution of individual events (within one day)** → L10 Radial Patchwork
+- **Bipolar scale (both ends are legitimate)** → L7 Brand Spectrum. Distinguish it from unipolar scoring (radar): for unipolar use the native ECharts radar
+- **Network** → ≤15 nodes: small G6/G11; >15 or when you need to look things up → B1 circular / B2 force-directed; multi-segment path flow → B3 Threads
+- **Many groups × grid (decorative feel wanted)** → L8 Dotty Matrix; for reading values → flatten it with G14
+- **Several dimensions of one entity set in a carousel (demo)** → G9 Scatter Morph
 
-### 地图显式触发规则
+### Explicit trigger rule for maps
 
-- 只有用户明确说“地图”“地域分布”“按国家/州着色”或点名 choropleth，才检查 Maps。数据表里仅出现地区字段不得自动触发。
-- 美国州级区域数值用 M1 US Choropleth；世界国家级区域数值用 M2 World Choropleth。地图面积是地理面积，不代表数值，副标题必须说明 `shade = value`。
-- M1/M2 依赖 ECharts 与在线 GeoJSON；交付时说明需要联网，或在用户明确要求离线时再内联合法来源的地图数据。
-- 中国地图不从 M1/M2 改名套用。只有拿到符合当前地图合规要求的完整数据源和审图信息后才制作。
+- Check Maps only when the user explicitly says "map", "regional distribution", "color by country/state", or names a choropleth. A region field that merely appears in the data table must not trigger it.
+- For US state-level values use M1 US Choropleth; for world country-level values use M2 World Choropleth. The area on a map is geographic area and does not represent the value, so the subtitle must state `shade = value`.
+- M1/M2 depend on ECharts and online GeoJSON. When you deliver, say that a network connection is needed, or inline map data from a legitimate source only when the user explicitly asks for offline use.
+- Do not rename and reuse M1/M2 for a map of China. Make one only after you have a complete data source and map-approval information that meet current map compliance requirements.
 
-### F13 Nested Treemap 硬规则
+### F13 Nested Treemap hard rules
 
-- 只接收层级数据和非负权重；父级值由子级求和，禁止父子总数互相矛盾。面积直接交给 ECharts treemap 布局，不再对值开方。
-- 默认展示两层（父组 + 叶子）。超过两层且读者需要逐层查询时才开启 drill-down；普通静态交付保持 `nodeClick:false`，避免误触改变视图。
-- Mono 的灰度只表示层级，不给每个叶子随机分配深浅；父组靠标题带、组间留白和边界区分。去掉颜色后仍能看清分组。
-- porcelain 用单色相明度表示有序的父组份额或层级；palm 用色相对应不超过 4 个顶层类目；wire 保持灰阶，只允许一个明确主角使用 `HERO`。
-- 面积已经表达数值时，颜色不得再次无说明地重复同一数值。副标题必须写清 `area = ...`，使用彩色时再写清 `color = ...`。
-- 叶子超过 30 个、标签大面积省略，或最小矩形小到无法形成稳定热区时，先合并长尾为 Other、拆成多张，或改用 G7 / L12 / B 系关系图。
-- Tooltip 至少显示完整层级路径、原始值和总量占比；卡内标签放不下就隐藏，不缩到低于最小字号。
+- It accepts only hierarchical data with non-negative weights. A parent's value is the sum of its children; parent and child totals must never contradict each other. Leave the area to the ECharts treemap layout, and do not take the square root of the values.
+- Show two levels by default (parent group + leaves). Turn on drill-down only when there are more than two levels and the reader needs to query them level by level; for ordinary static delivery keep `nodeClick:false` so an accidental click does not change the view.
+- In Mono, gray only marks the level; do not give each leaf a random light or dark shade. Parent groups are separated by the title band, the gaps between groups and the borders. The groups must still be clear with the color removed.
+- porcelain uses single-hue lightness for the ordered shares or levels of the parent groups; palm uses hue for no more than 4 top-level categories; wire stays grayscale and lets only one clear hero use `HERO`.
+- When the area already expresses the value, the color must not repeat the same value again without explanation. The subtitle must state `area = ...`, and when using color, also `color = ...`.
+- When there are more than 30 leaves, the labels are mostly omitted, or the smallest rectangle is too small to form a stable hover area: first merge the long tail into Other, split into several charts, or switch to a G7 / L12 / B-family relationship chart.
+- The tooltip shows at least the full hierarchy path, the raw value and the share of the total. If a label does not fit inside the card, hide it; do not shrink it below the minimum font size.
 
-## 五、交互三问（决定静态还是可交互）
+## 5. Three interaction questions (decide static or interactive)
 
-按顺序问：
+Ask in order:
 
-1. **这根线/点背后有没有一条真实记录？** 没有（纯肌理装饰，如 Cluster Field 的辐条、Hourglass 的淌线）→ 禁止加交互，给没有内容的元素加 hover 是欺骗。
-2. 有记录 → **不点能不能读出来？** 元素 <50 且两端有标注（如 Colonnade）→ 静态够用，hover 是锦上添花。
-3. **元素 >50 根或多段路径**（如 Threads）→ 必须 hover/pin，否则只是氛围图。交互实现参考 `templates/big-threads.html`：可见线下垫 9px 透明孪生线当热区，hover 单线亮整条路径、hover 标签拉整束、点击钉住。
+1. **Is there a real record behind this line/dot?** If not (pure texture decoration, such as the spokes of Cluster Field or the flowing lines of Hourglass) → adding interaction is forbidden. Adding hover to an element with no content is deception.
+2. If there is a record → **can it be read without clicking?** If there are <50 elements and both ends are labeled (as in Colonnade) → static is enough, and hover is a bonus.
+3. **More than 50 elements or multi-segment paths** (as in Threads) → hover/pin is required; otherwise it is only a mood chart. For the implementation see `templates/big-threads.html`: put a 9px transparent twin line under each visible line as the hit area, hovering a single line lights the whole path, hovering a label pulls the whole bundle, and a click pins it.
 
-## 六、库外图型 · 翻译流程
+## 6. Chart types outside the library · translation process
 
-用户要的图不在 63 张里（或发来一张参考图）时，**不是做不了，是现场造句**。流程四步，第一步不许跳：
+When the chart the user wants is not among the 63 (or the user sends a reference image), it is not "cannot do", it is "compose it on the spot". There are four steps, and the first must not be skipped:
 
-1. **先回答本体**：这个图型编码了什么？每个视觉通道（位置/长度/角度/面积/明度/密度）分别对应哪个数据维度？答不出来就问用户拿数据结构。抄形不抄魂 = 白做（pictorial bar 曾把"符号计数"错做成"树长高"，返工）。
-2. **找最近的亲戚**：在 catalog 里找数据形状最像的一张当起点，继承它的布局骨架和动画节奏。
-3. **用 token 造句**：色板、字体、圆角、动画参数全部从 `mono-tokens.js` 拿，不许发明新颜色新字号。产出必须和库里的图"一眼一家人"。走彩色时颜色改从 `color-presets.js` 的单一预设中取，其他 token 仍以 `mono-tokens.js` 为准。
-4. **过第二节硬规则和第八节自检**，和库内图同一标准。
+1. **First answer the underlying thing.** What does this chart type encode? Which data dimension does each visual channel (position / length / angle / area / lightness / density) map to? If you cannot answer, ask the user for the data structure. Copying the form but not the soul is wasted work (pictorial bar once turned "symbol counting" into "a tree growing taller" and had to be redone).
+2. **Find the closest relative.** In the catalog, find the chart whose data shape is most similar as a starting point, and inherit its layout skeleton and animation rhythm.
+3. **Compose with tokens.** Take the palette, fonts, corner radii and animation parameters all from `mono-tokens.js`; inventing new colors or font sizes is forbidden. The output must look "like one family" with the charts in the library. When you use color, take colors from a single preset in `color-presets.js`, and all other tokens still follow `mono-tokens.js`.
+4. **Pass the hard rules in Section 2 and the self-check in Section 8,** to the same standard as the charts in the library.
 
-参考图翻译的附加规则：识别参考图属于哪个流派（Glance or 编辑部），编辑部风格的密度、旁注、手绘感（`blob`）是本体的一部分，别做收敛了——almanac 曾因"不敢挤"返工。
+Extra rule for translating a reference image: identify which school the reference belongs to (Glance or editorial). The density, side notes and hand-drawn feel (`blob`) of the editorial style are part of the underlying thing, so do not tone them down. The almanac was once redone because it "did not dare to be crowded".
 
-## 六点五、彩色（按场景自动选择，单一色系）
+## 6.5 Color (chosen automatically by scenario, a single color system)
 
-**Mono 是保底方案，不是未触发彩色时的强制答案。** 用户没有提颜色时也要根据数据语义、类目数量、阅读场景和内容气质评估是否适合彩色；适配关系不明确，或颜色没有带来真实信息价值时，回到 Mono。
+**Mono is the fallback, not the forced answer whenever color has not been triggered.** Even when the user does not mention color, assess whether color suits the data semantics, the number of categories, the reading scenario and the tone of the content. When the fit is unclear, or color adds no real information value, go back to Mono.
 
-彩色初稿从三套预设中选择一套，色值在 `color-presets.js`，样张在 `templates/color/`。预设用于快速得到稳定、统一的第一版，不是锁死的色板。用户要求"这个蓝再深一点"时，在当前色系内继续调整；用户明确给出品牌色、色值或完整色板时，按下方规则建立 custom 色板。调整后必须重新检查对比度、视觉主次和数据语义。
+For the first color draft, choose one of the three presets; the color values are in `color-presets.js` and the samples are in `templates/color/`. A preset is for getting a stable, consistent first version quickly, not a locked palette. When the user asks "make this blue a bit deeper", keep adjusting inside the current color system. When the user explicitly gives a brand color, color values or a full palette, build a custom palette by the rules below. After any adjustment you must recheck contrast, visual hierarchy and data semantics.
 
-**同一份 HTML 或同一组交付必须先锁定一个全局色彩系统：Mono、porcelain、palm、wire 或一套 custom。** 所有图共享该选择。若其中某张图不支持已选系统，不得单独换色；改选一套全局兼容的系统，或整组退回 Mono。
+**One HTML file or one set of deliverables must first lock one global color system: Mono, porcelain, palm, wire, or one custom palette.** All charts share that choice. If one of the charts does not support the chosen system, do not change its color alone; either choose another global system that works for all of them, or send the whole set back to Mono.
 
-**结构正本永远是原版 gallery。** 查渲染代码去 `templates/` 根目录的 gallery，`templates/color/` 只查配色。先按第零节选定结构，再决定是否换肤。
+**The structural source is always the original gallery.** To look up rendering code, go to the gallery in the root of `templates/`; `templates/color/` is only for looking up colors. First choose the structure by Section 0, then decide whether to reskin.
 
-### 用不用彩色
+### Whether to use color
 
-按以下优先级判断：
+Decide by this priority:
 
-1. **用户明确指定。** 用户要求某种颜色、气质或预设时优先服从，但仍要通过容量、对比度和数据语义检查。
-2. **Agent 自动选择。** 即使用户没提颜色，只要数据形状和场景与某套预设有清楚的对应关系，就可以自动使用：有序单序列适合 porcelain；少量无序类目适合 palm；需要一个受控视线落点适合 wire。
-3. **关系不明确就用 Mono。** 类目过多、高密度记录、颜色没有稳定含义，或整组图无法共享同一预设时，使用 Mono。
+1. **The user specifies it explicitly.** When the user asks for a certain color, mood or preset, obey it first, but it must still pass the capacity, contrast and data-semantics checks.
+2. **The agent chooses automatically.** Even if the user does not mention color, when the data shape and scenario clearly correspond to a preset you may use it automatically: ordered single series suit porcelain; a few unordered categories suit palm; a need for one controlled focal point suits wire.
+3. **Use Mono when the relationship is unclear.** With too many categories, high-density records, colors with no stable meaning, or a set of charts that cannot share one preset, use Mono.
 
-彩色不是升级版，而是 Agent 可以主动选择的语义工具。交付时用一句话说明所选色系及其承担的数据含义。
+Color is not an upgrade; it is a semantic tool the agent may choose to use. When you deliver, explain in one sentence which color system you chose and what data meaning it carries.
 
-### 自定义色板（只在用户明确要求时启用）
+### Custom palette (enabled only when the user explicitly asks)
 
-Agent 不得自行发明第五套默认审美。只有用户给出明确色值、品牌色、品牌规范或"沿用这张参考图的配色"时，才建立 custom 色板；仅说"好看一点"仍从三套内置预设选择。
+The agent must not invent a fifth default aesthetic. Build a custom palette only when the user gives explicit color values, a brand color, brand guidelines, or "reuse the colors of this reference image". Saying only "make it look nicer" still means choosing from the three built-in presets.
 
-1. **先确定颜色逻辑，再分配色值。** 有序数据用单色相明度梯；无序类目用分类色；需要聚焦时用中性色 + 一个强调色。禁止先拿到五个颜色，再平均撒到所有元素上。
-2. **建立完整角色，不直接散落 hex。** custom 至少定义 `BG`、`TXT`、`MUT`、`GRID`、`DATA`；需要重点时再定义 `HERO`，有序数据定义 `RAMP`，分类数据定义 `CAT`。成品内联一个 `CUSTOM` 对象，所有图从角色取色。
-3. **按输入数量解释。** 1 个颜色生成同色相明度梯；2 个颜色默认分为主数据色 + 强调色，不自动当作两个平等类目；3–6 个颜色只有在数据确有对应类目时才进入 `CAT`。超过 6 个先合并类目、改用位置/标签，或退回 Mono。
-4. **允许派生明暗，不允许偷渡新色相。** 浅色由用户色与 `BG` 混合，深色由用户色与 `TXT` 混合；不得借用 porcelain、palm、wire 的色值补齐 custom。
-5. **对比度是硬门。** 正文和小标签相对背景至少 4.5:1，大字至少 3:1；关键边界、数据形状和交互状态相对相邻颜色至少 3:1。不达标时优先调整明度，不擅自改变用户指定的主色相。
-6. **颜色不能成为唯一线索。** 分类仍带标签，序数仍保留位置/长度/面积，强调仍有标题或旁注说明。色觉异常用户去掉颜色后，图的结构仍应读得懂。
-7. **一次只锁定这一套 custom。** custom 不与任何内置预设混用；多图交付共享同一个 `CUSTOM`。除非用户明确要求把品牌色固化为项目级预设，否则 custom 只内联在当前成品，不回写 `color-presets.js`。
+1. **Decide the color logic first, then assign values.** Ordered data uses a single-hue lightness ladder; unordered categories use categorical colors; when you need focus, use neutral colors plus one accent color. It is forbidden to take five colors first and then scatter them evenly over every element.
+2. **Build complete roles; do not scatter hex values.** A custom palette defines at least `BG`, `TXT`, `MUT`, `GRID` and `DATA`; define `HERO` when you need emphasis, `RAMP` for ordered data and `CAT` for categorical data. The finished work inlines one `CUSTOM` object, and every chart takes its colors from the roles.
+3. **Interpret by the number of inputs.** 1 color generates a lightness ladder of the same hue; 2 colors are by default a main data color plus an accent color, and are not automatically treated as two equal categories; 3–6 colors enter `CAT` only if the data really has matching categories. With more than 6, first merge categories, switch to position/labels, or fall back to Mono.
+4. **You may derive light and dark shades, but you may not smuggle in new hues.** Lighter shades mix the user's color with `BG`, and darker shades mix it with `TXT`. You must not borrow color values from porcelain, palm or wire to fill out a custom palette.
+5. **Contrast is a hard gate.** Body text and small labels need at least 4.5:1 against the background, large text at least 3:1; key edges, data shapes and interaction states need at least 3:1 against adjacent colors. When a check fails, adjust lightness first, and do not change the main hue the user specified on your own.
+6. **Color must not be the only cue.** Categories still carry labels, ordinal data keeps position/length/area, and emphasis is still explained by a title or side note. For users with color-vision deficiency, the structure of the chart must still read clearly with the color removed.
+7. **Lock only this one custom palette at a time.** A custom palette is never mixed with any built-in preset; a multi-chart deliverable shares one `CUSTOM`. Unless the user explicitly asks to fix the brand color as a project-level preset, the custom palette is inlined only in the current deliverable and is not written back to `color-presets.js`.
 
-用户后续要求"再深一点"、"背景暖一点"或替换某个色值时，修改对应角色并重新检查整套对比度和语义映射，不只改被点名的那一个元素。
+When the user later asks "a bit deeper", "warmer background", or to replace one color value, modify the corresponding role and recheck the contrast and semantic mapping of the whole set, not only the named element.
 
-### 选哪套：先看数据形状，再看气质
+### Which preset: data shape first, then mood
 
-| 数据形状 | 允许 | 原因 |
+| Data shape | Allowed | Reason |
 |---|---|---|
-| 有序 / 单序列（进度、热力、时间序列、单指标、排名） | porcelain、wire | 明度即数据的契约仍然成立 |
-| 无序类目 ≤4 | palm | 色相对应类目 |
-| 无序类目 5–6 | palm（勉强） | 依靠明度和饱和度辅助区分 |
-| 类目 >6 | Mono 灰阶 | 彩色预设容量不足 |
-| 需要克制但要一个视线落点 | wire | 灰阶承载数据，橙色只标主角 |
+| Ordered / single series (progress, heatmap, time series, single metric, ranking) | porcelain, wire | The "lightness is data" contract still holds |
+| Unordered categories ≤4 | palm | Hue maps to category |
+| Unordered categories 5–6 | palm (barely) | Relies on lightness and saturation to help tell them apart |
+| Categories >6 | Mono grayscale | The color presets do not have enough capacity |
+| Needs restraint but one focal point | wire | Grayscale carries the data, and orange marks only the hero |
 
-| 用户会说 | 预设 | 气质 |
+| What the user says | Preset | Mood |
 |---|---|---|
-| 蓝、冷、学术、理性、严肃、科技感 | porcelain | 单色相蓝阶 |
-| 绿、暖、自然、温柔、复古、莫兰迪 | palm | 绿黄低饱和，琥珀点睛 |
-| 黑白、克制、杂志感、编辑部 | wire | 黑灰加一点荧光橙 |
+| Blue, cool, academic, rational, serious, techy | porcelain | Single-hue blue ladder |
+| Green, warm, natural, gentle, retro, Morandi | palm | Low-saturation green-yellow with an amber accent |
+| Black and white, restrained, magazine feel, editorial | wire | Black and gray with a touch of fluorescent orange |
 
-### 彩色硬规则
+### Color hard rules
 
-- **同一交付只用一种色彩系统。** 一张图、同一份 HTML 或同一组姊妹图只能使用 Mono、`color-presets.js` 的一套预设，或一套用户明确要求的 custom。禁止预设彼此混用，也禁止 custom 借用内置预设补色。
-- **线宽 ×1.8、透明度地板 .85。** 灰阶下的发丝线换成淡色后容易消失；`dot heat` 除外。
-- **每张图至少 3 个色阶或色位。** 只用 1–2 个颜色时退回灰阶。
-- **颜色必须连接真实维度。** 序数梯接数值，分段色接月份或区段，分类色接类目；底注写清颜色在编码什么。
-- **强调色只给一个主角。** 第二个主角会消解强调。
-- **暗卡数据色必须亮于卡底。** 暗底大图使用 preset 的 `DARK` 块。`big-circular` / `big-force` / `big-threads` 只有 porcelain 和 palm；wire 使用原版 Mono 大图。
-- **palm 中 `DATA` 和 `HERO` 必须不同。** 琥珀和橄榄明度接近，不要把两者当作平等类目色。
+- **One deliverable uses one color system.** One chart, one HTML file or one group of sibling charts may use only Mono, one preset from `color-presets.js`, or one custom palette the user explicitly asked for. Mixing presets with each other is forbidden, and a custom palette must not borrow colors from the built-in presets.
+- **Line width ×1.8, opacity floor .85.** A hairline that works in grayscale easily disappears in a pale color; `dot heat` is the exception.
+- **Every chart has at least 3 color steps or color positions.** With only 1–2 colors, fall back to grayscale.
+- **Color must connect to a real dimension.** An ordinal ramp connects to the value, segment colors connect to months or segments, and category colors connect to categories. The footnote states what the color encodes.
+- **The accent color goes to only one hero.** A second hero dissolves the emphasis.
+- **Data colors on dark cards must be brighter than the card background.** Large dark-background charts use the preset's `DARK` block. `big-circular` / `big-force` / `big-threads` exist only in porcelain and palm; wire uses the original Mono large charts.
+- **In palm, `DATA` and `HERO` must differ.** Amber and olive are close in lightness, so do not treat the two as equal category colors.
 
-## 七、什么时候说不
+## 7. When to say no
 
-敢拒绝比什么都接更可信。以下情况不做，并给替代：
+Being willing to refuse is more credible than accepting everything. In the cases below, do not do it, and offer an alternative:
 
-- **断轴柱状图** → 拒绝，给三个诚实方案（冲天 / 放大镜 / 撕柱不撕轴）。
-- **发光 / 玻璃拟态 / 3D** → 拒绝，保持现有视觉语法。自定义色值按 custom 规则映射；跨色彩系统混用拒绝。
-- **拿多色相画单序列** → 拒绝。给 porcelain、wire 或退回 Mono。
-- **类目 >6 还要彩色** → 拒绝，退回 Mono 灰阶。
-- **用户未明确要求地图** → 不因数据里有地区字段自动使用 M1/M2；继续按普通比较、排名或构成选图。
-- **地图范围超出 M1/M2**（中国省级、城市点位、轨迹图等）→ 不套用错误边界；确认数据源、投影、合规和交互要求后再现场制作。
-- **给纯装饰元素加交互**（第五节第 1 问）→ 拒绝并解释。
-- **雷达图重构** → 不重构，用 ECharts 原生雷达 + Mono token 换肤（实测过：展示场景里"认得出的图型"有价值）。
-- 数据太少撑不起所选图型（如 3 个节点要力导向）→ 降级到更简单的图并说明。
+- **Bar chart with a broken axis** → refuse, and offer the three honest options (shoot through the top / magnifier / tear the bar, not the axis).
+- **Glow / glassmorphism / 3D** → refuse, and keep the existing visual grammar. Custom color values are mapped by the custom-palette rules; mixing across color systems is refused.
+- **Drawing a single series in several hues** → refuse. Offer porcelain, wire, or a return to Mono.
+- **Categories >6 and still wants color** → refuse, and go back to Mono grayscale.
+- **The user did not explicitly ask for a map** → do not use M1/M2 just because the data has a region field; keep choosing by ordinary comparison, ranking or composition.
+- **The map scope goes beyond M1/M2** (Chinese provinces, city points, trajectory maps, etc.) → do not apply the wrong boundaries; confirm the data source, projection, compliance and interaction requirements before building it on the spot.
+- **Adding interaction to a purely decorative element** (Question 1 in Section 5) → refuse and explain.
+- **Rebuilding the radar chart** → do not rebuild it; use the native ECharts radar reskinned with Mono tokens (tested: in a presentation setting, a "recognizable chart type" has value).
+- Too little data to support the chosen chart type (for example, 3 nodes for a force-directed graph) → downgrade to a simpler chart and explain.
 
-## 八、交付前自检清单
+## 8. Pre-delivery self-check list
 
-1. 数值和视觉成正比？（面积用了 sqrt？柱没断轴？）
-2. 色板是否受控？整份 HTML 或同一组交付是否只使用 Mono、单一内置预设或单一 custom？Mono 中出现任何非 ladder 颜色即返工；内置彩色出现另一套预设颜色即返工；custom 是否只从 `CUSTOM` 角色取色并通过对比度检查？
-3. 标签会不会重叠？（barcode 教训：邻近峰值标签要强制最小间距）
-4. 最小字号踩线没有？（半宽 6.5 / 通栏 5.5）
-5. 演示数据是 `rnd` 确定性的？刷新两次长得一样？
-6. reveal 正常？（滚入播、点击重播、timer 不叠加、reduced-motion 降级在）
-7. `node --check` 过语法（把 `<script>` 内容抽出来查）。
-8. 卡片四件套齐全？标题是结论不是图型名？
-9. 副标题把图例说清了？（读者不看代码只看这一行）
-10. 是否完成全量候选审计？至少写下 3 个候选和淘汰理由，而不是只记录“采用了哪个模板”。
-11. 如果是一页多图，模板是否全局分配过？有没有相似轮廓重复、暗卡过量、所有图都变成同一种径向图？
-12. 每张图是否记录了图型编号、gallery 文件和卡内标题？成品的核心结构是否确实来自该模板，而不是重新发明？
-13. 如果使用 Glance，是否写明 Lupi Editorial 与 Lupi Basics 为什么都不适配？如果没有，返工回到 Lupi / Basics。
-14. 最后一问：这张图放回所选 gallery 的对应卡片旁边，是不是同一个模板家族，而不只是“风格有点像”？
+1. Are values and visuals proportional? (Was sqrt used for area? Is the bar axis unbroken?)
+2. Is the palette under control? Does the whole HTML file or the whole set of deliverables use only Mono, one built-in preset or one custom palette? Any non-ladder color in Mono means redo; any color from a second preset in a built-in color scheme means redo; does the custom palette take colors only from the `CUSTOM` roles and pass the contrast checks?
+3. Could any labels overlap? (The barcode lesson: labels of neighboring peaks must be forced to a minimum spacing.)
+4. Is any text at the minimum font size limit? (6.5 half-width / 5.5 full-width)
+5. Is the demo data deterministic via `rnd`? Does it look the same after two refreshes?
+6. Does reveal work? (plays on scroll, replays on click, timers do not stack, the reduced-motion fallback is present)
+7. Does `node --check` pass on the syntax? (extract the `<script>` contents and check them)
+8. Is the four-part card structure complete? Is the title a conclusion and not a chart-type name?
+9. Does the subtitle explain the legend? (The reader does not read the code, only this line.)
+10. Was the full candidate audit done? Write down at least 3 candidates and why each was rejected, not just "which template was adopted".
+11. For a page with several charts, were the templates allocated globally? Are there repeated similar silhouettes, too many dark cards, or every chart turned into the same radial type?
+12. Does each chart record its chart-type number, gallery file and card title? Does the core structure of the finished chart really come from that template, and not from reinventing it?
+13. If Glance is used, is it written down why Lupi Editorial and Lupi Basics both do not fit? If not, redo the work and go back to Lupi / Basics.
+14. The last question: if you put this chart next to the matching card in the chosen gallery, is it the same template family, and not just "somewhat similar in style"?
 
-## 九、单文件模板骨架
+## 9. Single-file template skeleton
 
 ```html
 <!doctype html>
@@ -311,47 +311,47 @@ Agent 不得自行发明第五套默认审美。只有用户给出明确色值�
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Mono — {图名}</title>
-<!-- 需要 ECharts 时： -->
+<title>Mono — {chart name}</title>
+<!-- When ECharts is needed: -->
 <script src="https://cdn.jsdelivr.net/npm/echarts@6/dist/echarts.min.js"></script>
-<!-- 需要 Chart.js 时（G1 / G3）： -->
+<!-- When Chart.js is needed (G1 / G3): -->
 <!-- <script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script> -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="{MONO.FONT.link}" rel="stylesheet">
-<style>/* 内联 MONO.CARD_CSS */</style>
+<style>/* inline MONO.CARD_CSS */</style>
 </head>
 <body>
 <div class="grid2">
-  <div class="card"><!-- 或 card dark / card wide -->
-    <h2>{结论式标题}</h2>
-    <div class="sub">{说明} · {图例} · {时间范围}</div>
-    <!-- 图容器按引擎三选一： -->
+  <div class="card"><!-- or card dark / card wide -->
+    <h2>{conclusion-style title}</h2>
+    <div class="sub">{description} · {legend} · {time range}</div>
+    <!-- Chart container, choose one of three by engine: -->
     <div class="ch" id="ch"></div><!-- ECharts -->
-    <!-- 手写 SVG： <svg id="ch" viewBox="0 0 400 320"></svg> -->
-    <!-- Chart.js（G1/G3）： <div class="wrap"><canvas id="ch"></canvas></div>，配 .wrap{position:relative;height:320px} -->
-    <!-- ⚠️ Chart.js 必须挂 <canvas>，套 <div class="ch"> 会报 can't acquire context -->
-    <div class="src">{图型名} · {系列} · {数据来源}</div>
+    <!-- Hand-written SVG: <svg id="ch" viewBox="0 0 400 320"></svg> -->
+    <!-- Chart.js (G1/G3): <div class="wrap"><canvas id="ch"></canvas></div>, with .wrap{position:relative;height:320px} -->
+    <!-- ⚠️ Chart.js must mount on a <canvas>; wrapping it in <div class="ch"> throws "can't acquire context" -->
+    <div class="src">{chart name} · {series} · {data source}</div>
   </div>
 </div>
 <script>
-// 内联 mono-tokens.js 全文
-// ── 数据（用户只需要改这里）──
+// inline the full text of mono-tokens.js
+// ── Data (the user only needs to edit this part) ──
 const DATA = [ /* ... */ ];
-// ── 渲染 ──
+// ── Render ──
 MONO.obsReveal('ch', el => { /* ... */ });
 </script>
 </body>
 </html>
 ```
 
-## 十、报告模式骨架
+## 10. Report-mode skeleton
 
 ```text
-report-catalog.md                # 先按场景选 R01–R12
-templates/reports/report-NN.zh.html  # 中文整页正本
+report-catalog.md                # first choose R01–R12 by scenario
+templates/reports/report-NN.zh.html  # Chinese full-page source
 templates/reports/report-NN.en.html  # English full-page source
-templates/reports/index.html         # 本地可打开的模板索引
-docs/assets/reports/report-NN.png    # 中文版静态预览
+templates/reports/index.html         # template index you can open locally
+docs/assets/reports/report-NN.png    # static preview of the Chinese version
 ```
 
-报告交付仍然是单文件 HTML；`templates/reports/` 中的文件是可复制的起始骨架，不是需要逐字照抄的内容样例。模板内的演示数据只用于展示结构，生成最终报告时必须全部替换。
+A report delivery is still a single-file HTML. The files in `templates/reports/` are starting skeletons you can copy, not content samples to copy word for word. The demo data inside a template only shows the structure; when you generate the final report, you must replace all of it.

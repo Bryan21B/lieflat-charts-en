@@ -1,49 +1,49 @@
-# Lieflat Charts 报告模板目录 · 12 套
+# Lieflat Charts Report Template Catalog · 12 Templates
 
-> 报告模板决定整页的叙事顺序、版心、模块密度和阅读速度；页内图表仍须遵守 `catalog.md` 的数据契约。下表的场景是推荐用法，不是硬性限制：同一套版式可以迁移到金融经济、研究、业务、产品和个人记录等不同内容。
-> 每套模板提供中文和英文两个独立版本：`templates/reports/report-NN.zh.html` 与 `templates/reports/report-NN.en.html`。
-> 可视化索引在 `templates/reports/index.html`，静态预览在 `docs/assets/reports/`。
+> A report template decides the narrative order, text width, module density and reading speed of the whole page. The charts inside the page must still follow the data contract in `catalog.md`. The scenarios in the table below are recommended uses, not hard limits: the same layout can carry finance and economics, research, business, product and personal records.
+> Every template comes in two independent versions, Chinese and English: `templates/reports/report-NN.zh.html` and `templates/reports/report-NN.en.html`.
+> The visual index is in `templates/reports/index.html`, and the static previews are in `docs/assets/reports/`.
 
-## 选型顺序
+## Selection order
 
-1. 先按报告类型、受众和阅读任务筛选，不按“里面有哪种图”或模板名称里的行业词筛选。
-2. 再按信息密度、版心宽度、阅读速度和是否需要离线运行筛选。
-3. 至少比较 3 个候选；候选不足 3 个时比较全部。
-4. 锁定一个报告模板后保留其整页骨架，不拼接其他报告模板的区块。
+1. First filter by report type, audience and reading task. Do not filter by "which chart is inside" or by the industry word in the template name.
+2. Then filter by information density, text width, reading speed and whether it must run offline.
+3. Compare at least 3 candidates; when there are fewer than 3, compare all of them.
+4. Once you lock one report template, keep its whole-page skeleton and do not splice blocks from other report templates.
 
-## 模板索引
+## Template index
 
-| # | 中文名 / English | 常见报告类型 / 可迁移场景 | 版心 | 密度 | 色系 | 依赖 |
+| # | Chinese name / English | Common report types / transferable scenarios | Text width | Density | Color system | Dependencies |
 |---|---|---|---:|---|---|---|
-| R01 | 调研一页纸 / Survey One-Pager | 调研报告、研究简报、政策 / 市场洞察、白皮书开篇、对外数据发布 | 1080 | 3 图，中等 | Porcelain | 字体联网 |
-| R02 | 年度里程碑 / Annual Milestones | 年度复盘、业绩 / 财报回顾、投资人更新、产品或项目里程碑 | 980 | 3 图，中等 | Palm | 字体联网 |
-| R03 | 年度数据海报 / Year in Data | 年度数据报告、经营 / 财务年报、个人年度记录、年度趋势海报 | 1080 | 4 图，较高 | Wire | 字体联网 |
-| R04 | 月度运营 / Monthly Ops | 月报、业务数据报告、财报、运营 / 财务经营复盘、周期性监控 | 1080 | 4 图，较高 | Porcelain | 字体联网 |
-| R05 | 影响力故事 / Impact Story | 项目复盘、产品记录、公益 / 社区案例、影响力叙事、个人成长记录 | 760 | 2 图，低 | Mono | 字体联网 |
-| R06 | 产品八年年鉴 / Eight-Year Product Almanac | 长周期年鉴、产品 / 公司历史、多年财务或业务趋势、个人长期数据 | 980 | 4 图，高 | Palm | 字体联网 |
-| R07 | 调研拼贴海报 / Survey Collage Poster | 调研报告海报、用户 / 市场研究、活动 / 展会数据、社媒传播物料 | 980 | 5 图，很高 | Palm | 字体联网 |
-| R08 | 单位人群一页 / Population One-Pager | 人群 / 用户画像、政策 / 公益简报、市场细分、人口与社会经济数据 | 880 | 2 图，低 | Wire | 字体联网 |
-| R09 | 数据故事仪表盘 / Data Story Dashboard | dashboard、财务 / 经营驾驶舱、业务总览、竞品 / 市场对比、KPI 快照 | 1080 | 4 图 + KPI，高 | Porcelain | 字体联网 |
-| R10 | 旅行手记 / Travel Notebook | 旅行数据记录、运动数据记录、个人年度 / 生活数据、轻量项目日志 | 980 | 4 图 + 表，中等 | Palm | 字体联网 |
-| R11 | 研究简报卡 / Research Brief Card | 研究简报、金融 / 经济快报、社媒卡片、汇报插页、关键指标快照 | 600×1000 | 2 图，定尺 | Mono | Chart.js + ECharts CDN |
-| R12 | 周报速览 / Weekly Glance | 周报、财务 / 经营快报、运营监控、项目进展、运动或旅行周记 | 1080 | 4 图，高 | Palm | Chart.js + ECharts CDN |
+| R01 | 调研一页纸 / Survey One-Pager | Survey report, research brief, policy / market insight, opening of a white paper, public data release | 1080 | 3 charts, medium | Porcelain | Web fonts (network) |
+| R02 | 年度里程碑 / Annual Milestones | Annual review, results / financial-report recap, investor update, product or project milestones | 980 | 3 charts, medium | Palm | Web fonts (network) |
+| R03 | 年度数据海报 / Year in Data | Annual data report, business / financial annual report, personal year record, annual trend poster | 1080 | 4 charts, fairly high | Wire | Web fonts (network) |
+| R04 | 月度运营 / Monthly Ops | Monthly report, business data report, financial report, ops / finance review, periodic monitoring | 1080 | 4 charts, fairly high | Porcelain | Web fonts (network) |
+| R05 | 影响力故事 / Impact Story | Project retrospective, product record, public-interest / community case, impact narrative, personal growth record | 760 | 2 charts, low | Mono | Web fonts (network) |
+| R06 | 产品八年年鉴 / Eight-Year Product Almanac | Long-span almanac, product / company history, multi-year financial or business trends, long-term personal data | 980 | 4 charts, high | Palm | Web fonts (network) |
+| R07 | 调研拼贴海报 / Survey Collage Poster | Survey report poster, user / market research, event / expo data, social media material | 980 | 5 charts, very high | Palm | Web fonts (network) |
+| R08 | 单位人群一页 / Population One-Pager | Population / user persona, policy / public-interest brief, market segmentation, demographic and socioeconomic data | 880 | 2 charts, low | Wire | Web fonts (network) |
+| R09 | 数据故事仪表盘 / Data Story Dashboard | Dashboard, finance / business cockpit, business overview, competitor / market comparison, KPI snapshot | 1080 | 4 charts + KPIs, high | Porcelain | Web fonts (network) |
+| R10 | 旅行手记 / Travel Notebook | Travel data record, sports data record, personal annual / life data, lightweight project log | 980 | 4 charts + table, medium | Palm | Web fonts (network) |
+| R11 | 研究简报卡 / Research Brief Card | Research brief, finance / economics flash, social media card, briefing insert, key-metric snapshot | 600×1000 | 2 charts, fixed size | Mono | Chart.js + ECharts CDN |
+| R12 | 周报速览 / Weekly Glance | Weekly report, finance / business flash, ops monitoring, project progress, sports or travel weekly diary | 1080 | 4 charts, high | Palm | Chart.js + ECharts CDN |
 
-## 报告类型召回
+## Recall by report type
 
-- **调研报告 / 研究简报**：R01、R07、R08、R11。
-- **业务数据报告 / dashboard**：R04、R09、R12。
-- **财报 / 金融经济报告**：R02、R03、R04、R09、R11、R12。R04 的财务化示例见 `examples/reports/r04-financial-report.zh.html`。
-- **产品记录 / 项目复盘**：R02、R05、R06、R12。
-- **个人数据记录**：R03、R05、R06、R10、R12；运动、旅行、年度生活数据都可以使用。
-- **对外海报 / 社媒分享**：R03、R07、R11。
-- **模板选择原则**：按内容结构、信息密度、阅读速度和版心选择；不要因为模板名称里写了“旅行”“运营”或“年鉴”，就把它限制在单一行业。
-- **必须离线运行**：优先 R01–R10，并内联或移除在线字体；R11–R12 需要额外内联图表依赖。
-- **固定社媒画幅**：R11；内容装不下时换模板，不缩字号或裁掉信息。
+- **Survey report / research brief:** R01, R07, R08, R11.
+- **Business data report / dashboard:** R04, R09, R12.
+- **Financial report / finance and economics report:** R02, R03, R04, R09, R11, R12. A finance version of R04 is in `examples/reports/r04-financial-report.zh.html`.
+- **Product record / project retrospective:** R02, R05, R06, R12.
+- **Personal data record:** R03, R05, R06, R10, R12; sports, travel and annual life data can all use these.
+- **Public poster / social media sharing:** R03, R07, R11.
+- **Template selection principle:** choose by content structure, information density, reading speed and text width. Do not restrict a template to one industry just because its name says "travel", "operations" or "almanac".
+- **Must run offline:** prefer R01–R10 and inline or remove the web fonts; R11–R12 also need their chart dependencies inlined.
+- **Fixed social media frame:** R11; if the content does not fit, switch templates, and do not shrink the font or crop information.
 
-## 模板契约
+## Template contract
 
-- 报告模板是完整页面，不是图表 gallery。复制对应语言的整份 HTML 作为起点。
-- 保留模板的版心宽度、主网格、章节顺序、主要留白、色彩系统和图表槽位关系。
-- 允许替换文案、数据、来源、图例和与真实内容冲突的模块；允许删除没有证据支撑的次要模块。
-- 需要替换页内图型时，从 `catalog.md` 锁定图型并复用对应 gallery 的真实实现，只替换该图表槽位。
-- 禁止混用两套报告模板，禁止保留演示数据、演示来源或演示结论。
+- A report template is a complete page, not a chart gallery. Copy the whole HTML of the matching language as the starting point.
+- Keep the template's text width, main grid, section order, main whitespace, color system and the relationships between chart slots.
+- You may replace the copy, data, sources, legends and any module that conflicts with the real content; you may delete secondary modules that have no evidence behind them.
+- When you need to replace a chart inside the page, lock the chart type from `catalog.md` and reuse the real implementation in the matching gallery, replacing only that chart slot.
+- Mixing two report templates is forbidden, and so is keeping demo data, demo sources or demo conclusions.

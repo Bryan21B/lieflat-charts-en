@@ -1,105 +1,105 @@
-# Lieflat Charts 图型目录 · 63 张
+# Lieflat Charts Catalog · 63 Charts
 
-> 每张图挂三个标签：**数据形状**（选图的主键）、**场合**、**读者时间**。
-> **主力与后备：** 主力是 L1–L15 与 F1–F13，默认从这里出图。L16–L20、F14–F17、G19–G22 是后备，只有主力无法诚实编码这份数据时才用，并要写明理由。例外是 F15、F16、F17、L17、L20 这五张——主力里不存在对应编码，命中相应数据形状时直接用（见 `SKILL.md` 第零节 3.1 / 3.2）。
-> **选型优先级以 `SKILL.md` 的硬约束为准：默认先完整审计 Lupi Editorial，再审计 Lupi Basics；只有两组都不适配，或用户明确要求 Glance / dashboard / 三秒快读时，才进入 Glance。**
-> 「姊妹」列 = 同题异构对子，只用于比较数据契约和召回候选，不代表两案都要生成，也不能改变上述优先级。
-> 参考实现在 `templates/`：Glance 系 `templates/glance-gallery.html`，Lupi 系 `templates/lupi-gallery.html`，基础型组 `templates/basics-gallery.html`，地图 `templates/maps-gallery.html`，大图 `templates/big-*.html`。地图只有在用户明确要求地图或地域分布时才召回。gallery 是多卡合页——查某张图的代码，先按下表「卡内标题」找到卡片，再在 `<script>` 里搜同名 `// ════` 注释块。真实数据成品案例在 `examples/`。
+> Every chart carries three tags: **data shape** (the primary key for choosing a chart), **occasion**, and **reader time**.
+> **Main set and reserve set:** The main set is L1–L15 and F1–F13; charts come from here by default. L16–L20, F14–F17 and G19–G22 are the reserve set. Use them only when the main set cannot encode the data honestly, and state the reason. The exception is the five charts F15, F16, F17, L17 and L20: the main set has no matching encoding for them, so use them directly when the data shape matches (see `SKILL.md`, Section 0, rules 3.1 / 3.2).
+> **The selection priority follows the hard rules in `SKILL.md`: by default, audit Lupi Editorial in full first, then Lupi Basics. Go to Glance only when neither group fits, or when the user explicitly asks for Glance / dashboard / three-second read.**
+> The "Sibling" column = a pair of charts for the same topic with different structure. It is only for comparing data contracts and recalling candidates. It does not mean both versions should be generated, and it does not change the priority above.
+> Reference implementations are in `templates/`: the Glance family in `templates/glance-gallery.html`, the Lupi family in `templates/lupi-gallery.html`, the Basics group in `templates/basics-gallery.html`, maps in `templates/maps-gallery.html`, and large charts in `templates/big-*.html`. Recall maps only when the user explicitly asks for a map or regional distribution. A gallery is a multi-card page: to find the code for a chart, first find the card by the "Card title" in the table below, then search the `<script>` for the `// ════` comment block with the same name. Finished cases with real data are in `examples/`.
 
-## Glance 系 · 20 张（粗笔画 · 提前聚合 · 3 秒读完）
+## Glance family · 20 charts (thick strokes · pre-aggregated · read in 3 seconds)
 
-| # | 名字 | 卡内标题 | 数据形状 | 场合 | 读者时间 | 引擎 | 姊妹 |
+| # | Name | Card title | Data shape | Occasion | Reader time | Engine | Sibling |
 |---|------|---------|---------|------|---------|------|------|
-| G3 | Chunky Bars | Revenue by plan | 少类目排名比较（≤6） | 周报 dashboard | <10s | Chart.js* | L2 Dot Cascade；多选百分比 → L15 Ballot Tally |
-| G4 | Dot Waffle | Where sign-ups come from | 100% 构成（占比） | 通用，饼图的默认替代 | <10s | 手写 SVG | L14 Hundred Field |
-| G5 | Pictorial Bar | Trees planted, year by year | 逐年计数（一个符号=固定数量） | 对外故事页 | <10s | ECharts | — |
-| G6 | Circular Graph（小） | Who works with whom | 网络，≤12 节点 | 快速示意 | <10s | ECharts（暗卡） | 大图 B1 的预览版，节点多用 B1 |
-| G7 | Tree LR | Everything the platform ships | 层级结构（2–3 层） | 产品目录/架构页 | ~30s | ECharts | — |
-| G8 | Rainfall Dual Area | Campaigns rain down | 双序列因果（投入 vs 产出） | 增长复盘 | ~30s | ECharts | — |
-| G9 | Scatter Morph | One dataset, three views | 同一实体集的三个维度轮播 | 短视频/演示 | 动画 | ECharts universalTransition | — |
-| G10 | Diverging Bar | Where we gained, where we bled | 有正负的分类数值 | 周报 dashboard | <10s | ECharts | —（Equalizer、Meridian Dots 已删） |
-| G11 | Force Graph（小） | Integrations, pulled into orbit | 中心+卫星网络，≤15 节点 | 快速示意，可拖 | <10s | ECharts（暗卡） | 大图 B2 的预览版；静态海报版 L6 |
-| G12 | Stagger Wave | Fifty markets, one wave | 多类目分布（30–60 根） | 短视频入场 | 动画 | ECharts | — |
-| G13 | Big Slice (Custom Pie) | Big slice, deep engagement | 双编码：占比(角)×强度(径) | 产品分析 | ~30s | ECharts custom | — |
-| G14 | Single Axis | Support load, day by day | 星期×小时×量（punch card 数据） | 支持/运维周报 | ~30s | ECharts | —（Punch Card 已删，此为唯一版本） |
-| G15 | Jitter Strip | Response times, spread out | 分组分布，逐条记录（几百点） | SRE/工单分析 | ~30s | ECharts | — |
-| G16 | Bar Race | Eight products race | 排名随时间演变 | 短视频 | 动画 | ECharts realtimeSort | — |
-| G17 | Dynamic Stream | Concurrent users, streaming | 实时滚动序列 | 直播/大屏 | 动画 | ECharts | — |
-| G18 | Draw-in + Counter | H1 revenue, drawn in one stroke | 累计增长（一条线+一个大数） | 短视频/汇报开场 | 动画 | ECharts | —（Release Rings 已删） |
-| G19 | Violin | How fast each plan gets an answer | 分组连续分布的密度轮廓 + 中位数 | dashboard/分析汇报 | <10s | SVG | F15 Tick Box；L19 Ridgeline |
-| G20 | Matrix Heat (Glance) | Adoption runs hot on the new versions | 两个离散维度 × 数值，≤60 格，每格直接读数 | dashboard/产品分析 | <10s | SVG | L16 Matrix Heat（细读版） |
-| G21 | Rank Strip | Flows climbs to the top | 多实体排名随离散时间变化，适合静态印刷 | 汇报/账单复盘 | <10s | SVG | G16 Bar Race（动态演示） |
-| G22 | Aggregate Sankey | Channels pour into plans | 两端聚合流量，带宽=数量，不要求逐路径查询 | 归因/转化分析 | ~30s | SVG | B3 Threads（逐路径查询） |
+| G3 | Chunky Bars | Revenue by plan | Ranked comparison of few categories (≤6) | Weekly report, dashboard | <10s | Chart.js* | L2 Dot Cascade; for multiple-choice percentages → L15 Ballot Tally |
+| G4 | Dot Waffle | Where sign-ups come from | 100% composition (shares) | General; the default replacement for a pie chart | <10s | Hand-written SVG | L14 Hundred Field |
+| G5 | Pictorial Bar | Trees planted, year by year | Yearly counts (one symbol = a fixed quantity) | Public story page | <10s | ECharts | — |
+| G6 | Circular Graph (small) | Who works with whom | Network, ≤12 nodes | Quick sketch | <10s | ECharts (dark card) | Preview version of the large chart B1; use B1 for more nodes |
+| G7 | Tree LR | Everything the platform ships | Hierarchy (2–3 levels) | Product catalog / architecture page | ~30s | ECharts | — |
+| G8 | Rainfall Dual Area | Campaigns rain down | Two-series cause and effect (input vs output) | Growth retrospective | ~30s | ECharts | — |
+| G9 | Scatter Morph | One dataset, three views | Carousel of three dimensions of the same entity set | Short video / demo | Animation | ECharts universalTransition | — |
+| G10 | Diverging Bar | Where we gained, where we bled | Categorical values with positive and negative | Weekly report, dashboard | <10s | ECharts | — (Equalizer and Meridian Dots were removed) |
+| G11 | Force Graph (small) | Integrations, pulled into orbit | Center + satellite network, ≤15 nodes | Quick sketch, draggable | <10s | ECharts (dark card) | Preview version of the large chart B2; static poster version L6 |
+| G12 | Stagger Wave | Fifty markets, one wave | Distribution over many categories (30–60 bars) | Short-video intro | Animation | ECharts | — |
+| G13 | Big Slice (Custom Pie) | Big slice, deep engagement | Double encoding: share (angle) × intensity (radius) | Product analytics | ~30s | ECharts custom | — |
+| G14 | Single Axis | Support load, day by day | Weekday × hour × volume (punch card data) | Support / ops weekly report | ~30s | ECharts | — (Punch Card was removed; this is the only version) |
+| G15 | Jitter Strip | Response times, spread out | Distribution by group, individual records (hundreds of points) | SRE / ticket analysis | ~30s | ECharts | — |
+| G16 | Bar Race | Eight products race | Rank evolving over time | Short video | Animation | ECharts realtimeSort | — |
+| G17 | Dynamic Stream | Concurrent users, streaming | Real-time scrolling series | Live stream / big screen | Animation | ECharts | — |
+| G18 | Draw-in + Counter | H1 revenue, drawn in one stroke | Cumulative growth (one line + one big number) | Short video / opening of a briefing | Animation | ECharts | — (Release Rings was removed) |
+| G19 | Violin | How fast each plan gets an answer | Density outline of a continuous distribution by group + median | Dashboard / analysis briefing | <10s | SVG | F15 Tick Box; L19 Ridgeline |
+| G20 | Matrix Heat (Glance) | Adoption runs hot on the new versions | Two discrete dimensions × value, ≤60 cells, value readable in every cell | Dashboard / product analytics | <10s | SVG | L16 Matrix Heat (close-reading version) |
+| G21 | Rank Strip | Flows climbs to the top | Rank of many entities over discrete time, suited to static print | Briefing / bill retrospective | <10s | SVG | G16 Bar Race (dynamic demo) |
+| G22 | Aggregate Sankey | Channels pour into plans | Aggregated flow between two ends, band width = quantity, no per-path lookup needed | Attribution / conversion analysis | ~30s | SVG | B3 Threads (per-path lookup) |
 
-\* G1/G3 仍使用 Chart.js；后续可迁移到 ECharts，以统一渲染栈。
+\* G1/G3 still use Chart.js; they may later migrate to ECharts to unify the rendering stack.
 
-## Lupi 系 · 19 张（发丝线 · 逐记录 · 30 秒阅读）
+## Lupi family · 19 charts (hairlines · per record · 30-second read)
 
-| # | 名字 | 卡内标题 | 数据形状 | 场合 | 读者时间 | 引擎 | 姊妹 |
+| # | Name | Card title | Data shape | Occasion | Reader time | Engine | Sibling |
 |---|------|---------|---------|------|---------|------|------|
-| L1 | Launch Fan | Twelve features, fanned out | 多实体各带出生时间+当前规模 | 年报/故事页 | ~30s | SVG | — |
-| L2 | Dot Cascade | What breaks, stacked and ranked | 排名比较，可数单位（unit chart） | 年报/故事页 | ~30s | SVG（暗卡） | G3 Chunky Bars |
-| L3 | Barcode Lollipop | Ninety days as a barcode | 每天一个读数的日序列（90 天级） | 年报/故事页（配文字栏） | ~30s | SVG（通栏） |
-| L4 | Arc Matrix | Eight products land in twelve cities | 分类×分类+量，小数据（≤100 格） | 轻量矩阵 | ~30s | SVG | L9 Almanac 的轻量版，数据薄用这张 |
-| L5 | Radial Convergence | 48 requests pull toward five themes | 多对一归属，不丢明细（≤60 条） | 海报/封面 | ~30s | SVG | L12 Colonnade（两案供选） |
-| L6 | Cluster Field | The contributor field | 中心+卫星网络，海报版 | 海报/封面（认形不查数） | ~30s | SVG（通栏） | B2 force-big（要交互/查数用 B2） |
-| L7 | Brand Spectrum | Where the brand sits | 双极量表（两端都是合法位置）+ 竞品对照 | 品牌调研报告 | ~30s | SVG | —（Equalizer 已删，唯一保留的量表图） |
-| L8 | Dotty Matrix | Four squads, stacked in space | 多组×网格×量，等距堆叠 | 封面/海报（装饰强） | ~30s | SVG | G14 摊平版更易读，要读数用 G14 |
-| L9 | Bubble Almanac | Eight years of tickets, one almanac | 分类×年份+量+状态，大跨度（手绘 blob） | 年报（带旁注/大事记） | >30s | SVG（通栏） | L4 Arc Matrix（轻量版） |
-| L10 | Radial Patchwork | A quarter of deploys, overlaid | 逐事件叠加：时刻(角)×规模(径)，透明度=密度 | 年报/故事页 | >30s | SVG | —（Polar Line 已删，此为唯一 24h 分布图） |
-| L11 | Trend Lineage | Features rise, fall, come back | 事件序列生命史（首发/重做/休眠/存活） | 产品复盘 | >30s | SVG | — |
-| L12 | Type Colonnade | Forty-four repos, ten owners | 多对一归属+逐条名单（≤50 条） | 治理/审计报告 | ~30s | SVG | L5 Convergence（两案供选） |
-| L13 | Hourglass Stream | The funnel, poured | 分阶段递减人数（漏斗） | 年报/故事页 | ~30s | SVG | — |
-| L14 | Hundred Field | A hundred of us, four minds | 100% 构成（占比），≤6 类小数据 | 年报/故事页 | ~30s | SVG | G4 Dot Waffle |
-| L15 | Ballot Tally | What they fear, tick by tick | 多选题百分比（各项独立 0–100），≤6 项 | 年报/故事页 | ~30s | SVG | G3 Chunky Bars |
-| L16 | Matrix Heat | Which features get used together | 两个离散维度 × 数值，≤100 格，保留矩阵结构与重点格 | 年报/产品分析 | ~30s | SVG | G20 Matrix Heat（快读版） |
-| L17 | Calendar Heat | A year of deploys, day by day | 一整年日期 × 数量，52 周 × 7 天 | 年报/运营复盘 | ~30s | SVG（通栏） | F10 Dot Heat（星期×小时） |
-| L19 | Ridgeline | Five pipelines, five tempos | 3–8 组连续分布的密度形状比较 | 年报/研究报告 | >30s | SVG | G19 Violin（少组快读） |
-| L20 | Parallel Coordinates | Twelve products, four dimensions | 同一实体集跨 3–6 个连续维度，一线一实体 | 产品组合/研究报告 | >30s | SVG | G9 Scatter Morph（演示轮播） |
+| L1 | Launch Fan | Twelve features, fanned out | Many entities, each with birth time + current size | Annual report / story page | ~30s | SVG | — |
+| L2 | Dot Cascade | What breaks, stacked and ranked | Ranked comparison, countable units (unit chart) | Annual report / story page | ~30s | SVG (dark card) | G3 Chunky Bars |
+| L3 | Barcode Lollipop | Ninety days as a barcode | Daily series with one reading per day (90-day scale) | Annual report / story page (with a text column) | ~30s | SVG (full width) |
+| L4 | Arc Matrix | Eight products land in twelve cities | Category × category + value, small data (≤100 cells) | Lightweight matrix | ~30s | SVG | Lightweight version of L9 Almanac; use this one when the data is thin |
+| L5 | Radial Convergence | 48 requests pull toward five themes | Many-to-one membership, details kept (≤60 items) | Poster / cover | ~30s | SVG | L12 Colonnade (two options to choose from) |
+| L6 | Cluster Field | The contributor field | Center + satellite network, poster version | Poster / cover (recognize the form, no lookup) | ~30s | SVG (full width) | B2 force-big (use B2 for interaction / lookup) |
+| L7 | Brand Spectrum | Where the brand sits | Bipolar scale (both ends are legitimate positions) + competitor comparison | Brand research report | ~30s | SVG | — (Equalizer was removed; this is the only scale chart kept) |
+| L8 | Dotty Matrix | Four squads, stacked in space | Many groups × grid × value, isometric stacking | Cover / poster (strongly decorative) | ~30s | SVG | The flattened G14 is easier to read; use G14 for reading values |
+| L9 | Bubble Almanac | Eight years of tickets, one almanac | Category × year + value + status, long span (hand-drawn blob) | Annual report (with side notes / key events) | >30s | SVG (full width) | L4 Arc Matrix (lightweight version) |
+| L10 | Radial Patchwork | A quarter of deploys, overlaid | Overlay of individual events: time of day (angle) × size (radius), opacity = density | Annual report / story page | >30s | SVG | — (Polar Line was removed; this is the only 24h distribution chart) |
+| L11 | Trend Lineage | Features rise, fall, come back | Lifecycle of an event series (launch / rework / dormant / alive) | Product retrospective | >30s | SVG | — |
+| L12 | Type Colonnade | Forty-four repos, ten owners | Many-to-one membership + item-by-item list (≤50 items) | Governance / audit report | ~30s | SVG | L5 Convergence (two options to choose from) |
+| L13 | Hourglass Stream | The funnel, poured | Headcount declining stage by stage (funnel) | Annual report / story page | ~30s | SVG | — |
+| L14 | Hundred Field | A hundred of us, four minds | 100% composition (shares), small data with ≤6 categories | Annual report / story page | ~30s | SVG | G4 Dot Waffle |
+| L15 | Ballot Tally | What they fear, tick by tick | Multiple-choice percentages (each item independently 0–100), ≤6 items | Annual report / story page | ~30s | SVG | G3 Chunky Bars |
+| L16 | Matrix Heat | Which features get used together | Two discrete dimensions × value, ≤100 cells, keeps the matrix structure and key cells | Annual report / product analytics | ~30s | SVG | G20 Matrix Heat (quick-read version) |
+| L17 | Calendar Heat | A year of deploys, day by day | A full year of dates × value, 52 weeks × 7 days | Annual report / ops retrospective | ~30s | SVG (full width) | F10 Dot Heat (weekday × hour) |
+| L19 | Ridgeline | Five pipelines, five tempos | Comparing the density shapes of 3–8 continuous distributions | Annual report / research report | >30s | SVG | G19 Violin (quick read, few groups) |
+| L20 | Parallel Coordinates | Twelve products, four dimensions | One entity set across 3–6 continuous dimensions, one line per entity | Product portfolio / research report | >30s | SVG | G9 Scatter Morph (demo carousel) |
 
-> L14–L15 是**小数据组**：数据只有几个百分比时靠单位分解拿回 Lupi 密度——1 点 = 1 人 / 1 百分点，密度来自单位而不是记录数。单位含义必须写进副标题（如 "one dot = one person in a hundred"），且只摊诚实单位，不编造个体。
+> L14–L15 are the **small-data group**: when the data is only a few percentages, unit decomposition brings back Lupi density. 1 dot = 1 person / 1 percentage point, and the density comes from the units, not from the record count. The meaning of the unit must be written in the subtitle (for example "one dot = one person in a hundred"), and only honest units are spread; never invent individuals.
 
-## 基础型组 · 17 张（F1–F17 · Lupi 语法 × 基础图型剪影，为稀疏数据而设）
+## Basics group · 17 charts (F1–F17 · Lupi grammar × basic chart silhouettes, made for sparse data)
 
-远看认得出基础图型（柱/折线/环形…），近看每个单位可数。数据只有几个类目或几十天时的 Lupi 首选——先来这里找，找不到再走库外翻译。参考实现 `templates/basics-gallery.html`。
+From far away you recognize the basic chart type (bar / line / donut…); up close every unit is countable. This is the first choice in Lupi when the data is only a few categories or a few dozen days. Look here first, and only if nothing fits go to the outside-the-library translation. Reference implementation: `templates/basics-gallery.html`.
 
-| # | 名字 | 卡内标题 | 数据形状 | 场合 | 读者时间 | 引擎 | 姊妹 |
+| # | Name | Card title | Data shape | Occasion | Reader time | Engine | Sibling |
 |---|------|---------|---------|------|---------|------|------|
-| F1 | Rung Bars | Revenue by plan, rung by rung | 少类目比较（≤8），单位可数 | 年报/故事页 | ~30s | SVG | G3 Chunky Bars |
-| F2 | Hairline Line | Thirty days of sign-ups | 日序列（≤30 天，逐日读数） | 年报/故事页 | ~30s | SVG |
-| F3 | Hairline Area | Concurrent users, filled with days | 日序列（30–60 天，看形态） | 年报/故事页 | ~30s | SVG | L3 Barcode Lollipop |
-| F4 | Tick Donut | Where the traffic comes from | 100% 构成（≤6 段） | 年报/故事页 | ~30s | SVG | G4 Dot Waffle ⇄ L14 Hundred Field |
-| F5 | Tick Rows | Six teams, shipped and counted | 横向排名比较，单位可数（≤8 行） | 年报/故事页 | ~30s | SVG | L2 Dot Cascade |
-| F6 | Paired Rungs | This year against last, plan by plan | 分组对比（每类 2 系列，如今昔） | 年报/复盘 | ~30s | SVG | — |
-| F7 | Stacked Rungs | Where each region's revenue sits | 堆叠构成（≤4 类 × ≤3 段） | 年报/复盘 | ~30s | SVG | — |
-| F8 | Plumb Scatter | Price against satisfaction | 二维散点（≤20 点） | 产品分析 | ~30s | SVG | G15 Jitter Strip（分布用） |
-| F9 | Rung Waterfall | From gross to net, step by step | 瀑布 / 增减分解（≤6 级） | 财务/复盘 | ~30s | SVG | — |
-| F10 | Dot Heat | When support gets loud | 星期×小时×量（小热力） | 支持/运维 | ~30s | SVG | G14 Single Axis |
-| F11 | Tick Gauge | How far to the quarter's goal | 单值进度（0–100%） | 汇报开场 | <10s | SVG | G18 Draw-in + Counter |
-| F12 | Dumbbell Queue | Onboarding, before and after | 类目级前后对比（≤6 类，串珠=真单位） | 年报/复盘 | ~30s | SVG | —（两点趋势的 Lupi 位，替代已删 Slope Beads） |
-| F13 | Nested Treemap | Where the work went | 两层层级 + 正数权重，矩形面积=数值 | 预算/产品组合/空间占用 | ~30s | ECharts（SVG） | G7 Tree LR（只看从属关系、不看份额时） |
-| F14 | Rung Histogram | Most tickets resolve within six hours | 单变量分箱频数，bin 有业务含义且单位可数 | 支持/运营分析 | ~30s | SVG | G19 Violin；F15 Tick Box |
-| F15 | Tick Box | Reply times, boxed by plan | 分组五数概括 + 异常值，原始分布可被汇总 | 支持/实验分析 | ~30s | SVG | G19 Violin；F14 Histogram |
-| F16 | Stream Ribbon | Three products trade the same river | 2–5 个系列的构成随连续时间变化，同时看总量 | 产品/流量复盘 | ~30s | SVG（通栏） | F7 Stacked Rungs（静态类目） |
-| F17 | Candlestick | Six weeks of the token, candle by candle | OHLC 四值时间序列，空心=涨、实心=跌 | 行情/价格复盘 | ~30s | SVG |
+| F1 | Rung Bars | Revenue by plan, rung by rung | Comparison of few categories (≤8), countable units | Annual report / story page | ~30s | SVG | G3 Chunky Bars |
+| F2 | Hairline Line | Thirty days of sign-ups | Daily series (≤30 days, daily readings) | Annual report / story page | ~30s | SVG |
+| F3 | Hairline Area | Concurrent users, filled with days | Daily series (30–60 days, reading the shape) | Annual report / story page | ~30s | SVG | L3 Barcode Lollipop |
+| F4 | Tick Donut | Where the traffic comes from | 100% composition (≤6 segments) | Annual report / story page | ~30s | SVG | G4 Dot Waffle ⇄ L14 Hundred Field |
+| F5 | Tick Rows | Six teams, shipped and counted | Horizontal ranked comparison, countable units (≤8 rows) | Annual report / story page | ~30s | SVG | L2 Dot Cascade |
+| F6 | Paired Rungs | This year against last, plan by plan | Grouped comparison (2 series per category, such as then and now) | Annual report / retrospective | ~30s | SVG | — |
+| F7 | Stacked Rungs | Where each region's revenue sits | Stacked composition (≤4 categories × ≤3 segments) | Annual report / retrospective | ~30s | SVG | — |
+| F8 | Plumb Scatter | Price against satisfaction | Two-dimensional scatter (≤20 points) | Product analytics | ~30s | SVG | G15 Jitter Strip (for distributions) |
+| F9 | Rung Waterfall | From gross to net, step by step | Waterfall / increase-decrease decomposition (≤6 steps) | Finance / retrospective | ~30s | SVG | — |
+| F10 | Dot Heat | When support gets loud | Weekday × hour × value (small heatmap) | Support / ops | ~30s | SVG | G14 Single Axis |
+| F11 | Tick Gauge | How far to the quarter's goal | Single-value progress (0–100%) | Opening of a briefing | <10s | SVG | G18 Draw-in + Counter |
+| F12 | Dumbbell Queue | Onboarding, before and after | Category-level before / after comparison (≤6 categories, beads = real units) | Annual report / retrospective | ~30s | SVG | — (the Lupi slot for two-point trends; replaces the removed Slope Beads) |
+| F13 | Nested Treemap | Where the work went | Two-level hierarchy + positive weights, rectangle area = value | Budget / product portfolio / space usage | ~30s | ECharts (SVG) | G7 Tree LR (when you only care about membership, not shares) |
+| F14 | Rung Histogram | Most tickets resolve within six hours | Binned frequency of a single variable, bins with business meaning and countable units | Support / ops analysis | ~30s | SVG | G19 Violin; F15 Tick Box |
+| F15 | Tick Box | Reply times, boxed by plan | Five-number summary + outliers by group, the raw distribution can be summarized | Support / experiment analysis | ~30s | SVG | G19 Violin; F14 Histogram |
+| F16 | Stream Ribbon | Three products trade the same river | Composition of 2–5 series over continuous time, with the total in view | Product / traffic retrospective | ~30s | SVG (full width) | F7 Stacked Rungs (static categories) |
+| F17 | Candlestick | Six weeks of the token, candle by candle | OHLC four-value time series, hollow = up, solid = down | Market / price retrospective | ~30s | SVG |
 
-## 地图 · 2 张（仅在用户明确要求地图时召回）
+## Maps · 2 charts (recalled only when the user explicitly asks for a map)
 
-数据里出现国家、州省或地区字段，**不等于自动使用地图**。只有用户明确提出“地图”“地域分布”“按国家/州着色”等要求时，才从 `templates/maps-gallery.html` 选择。地图通过 ECharts 与在线 GeoJSON 渲染，需要联网。
+Country, state/province or region fields in the data **do not mean a map is used automatically**. Choose from `templates/maps-gallery.html` only when the user explicitly asks for a "map", "regional distribution", "color by country/state" and the like. Maps render through ECharts and online GeoJSON, so they need a network connection.
 
-| # | 名字 | 卡内标题 | 数据形状 | 场合 | 读者时间 | 引擎 | 限制 |
+| # | Name | Card title | Data shape | Occasion | Reader time | Engine | Limit |
 |---|------|---------|---------|------|---------|------|------|
-| M1 | US Choropleth | Sign-ups across the states | 美国州级区域 + 非负数值，明度=数值 | 美国市场/运营报告 | ~30s | ECharts + GeoJSON | 仅用户明确要求；州面积不表示数值 |
-| M2 | World Choropleth | Where the users are | 世界国家级区域 + 非负数值，明度=数值 | 全球市场/运营报告 | ~30s | ECharts + GeoJSON | 仅用户明确要求；不用于点位或路径 |
+| M1 | US Choropleth | Sign-ups across the states | US state-level regions + non-negative values, lightness = value | US market / ops report | ~30s | ECharts + GeoJSON | Only when the user explicitly asks; state area does not represent the value |
+| M2 | World Choropleth | Where the users are | World country-level regions + non-negative values, lightness = value | Global market / ops report | ~30s | ECharts + GeoJSON | Only when the user explicitly asks; not for points or paths |
 
-## 独立交互大图 · 3 张（一图一文件，整页幅面）
+## Standalone interactive large charts · 3 charts (one chart per file, full-page size)
 
-| # | 文件 | 数据形状 | 交互 | 什么时候用 |
+| # | File | Data shape | Interaction | When to use |
 |---|------|---------|------|-----------|
-| B1 | `templates/big-circular.html` | 网络 60 节点环形弦膜 | hover 聚焦邻接，点击重播 | 节点 >15 的关系数据 |
-| B2 | `templates/big-force.html` | 网络 180 节点力导向星系 | 拖拽回弹、hover 聚焦 | 大网络要逐节点查 |
-| B3 | `templates/big-threads.html` | 三段路径 100+ 条丝线 | hover 单线/整束，点击钉住，状态栏读数 | 多段流向要逐路径查 |
+| B1 | `templates/big-circular.html` | Network, 60 nodes, circular chord membrane | Hover focuses neighbors, click replays | Relationship data with more than 15 nodes |
+| B2 | `templates/big-force.html` | Network, 180 nodes, force-directed galaxy | Drag and rebound, hover focus | Large networks where you need to look up individual nodes |
+| B3 | `templates/big-threads.html` | Three-segment paths, 100+ threads | Hover a single thread / whole bundle, click to pin, status bar readout | Multi-segment flows where you need to look up individual paths |
 
-## 已移除图型（已有更合适的替代）
+## Removed chart types (a better replacement exists)
 
-Polar Line（24h 分布 → L10）、Punch Card（→ G14）、Release Rings（风格不属于任何一系）、静态 Thread Triptych（→ B3）、Profile Equalizer（→ G10）、Slope Beads（交叉斜线的可读性不足，斜率图仍待重新设计）、Meridian Dots（正负分类改用 G10）。后两张源自未采用的 Lenny 案例草稿，不建议按原样恢复。
+Polar Line (24h distribution → L10), Punch Card (→ G14), Release Rings (its style belongs to no family), static Thread Triptych (→ B3), Profile Equalizer (→ G10), Slope Beads (crossing slope lines were not readable enough; the slope chart still needs to be redesigned), Meridian Dots (use G10 for positive and negative categories). The last two came from an unused Lenny case draft and are not recommended to restore as they were.
